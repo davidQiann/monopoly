@@ -1,4 +1,4 @@
-package edu.eom.ics4u.monpoly.game;
+package edu.eom.ics4u.monopoly.game;
 
 import java.awt.Graphics;
 import java.awt.Image;

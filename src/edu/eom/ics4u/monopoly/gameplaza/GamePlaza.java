@@ -18,7 +18,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import edu.eom.ics4u.monpoly.game.GameGui;
+import edu.eom.ics4u.monopoly.game.GameGui;
 //import javax.swing.text.html.AccessibleHTML.TableElementInfo.TableAccessibleContext;
 
 
