@@ -43,8 +43,8 @@ public class MapPanel extends JPanel{
     private Image imageDice1 = DICE_IMAGES[4], imageDice2 = DICE_IMAGES[3];
     private int imageCnt = 9;
     
-    private static final int NUM_PROPERTY = 39;
-    private Property properties [] = new Property[NUM_PROPERTY]; // 0 - 38
+    private static final int NUM_PROPERTY = 40;
+    private Property properties [] = new Property[NUM_PROPERTY]; // 0 - 39
 
    // DL = Down Left, UL = Up Left, UR = Up Right, DR = Down Right
     public static final int EDGE_DL = 0, EDGE_UL = 1, EDGE_UR = 2, EDGE_DR = 3; 
@@ -64,6 +64,7 @@ public class MapPanel extends JPanel{
     	properties[9] = new Property(9, "public", "bank");
     	properties[19] = new Property(19, "public", "park");
     	properties[29] = new Property(29,"public","hospital");
+    	properties[39] = new Property(39,"public","START");
     	// only for test begin
     	
     	calcPropertyCoor(XROAD,YROAD);
@@ -76,6 +77,7 @@ public class MapPanel extends JPanel{
     	g.fillRect(0, 0, GameGui.MAP_WIDTH, GameGui.MAP_HEIGHT);
     	g.drawImage(ROAD_IMAGE, XROAD, YROAD, null);
     	g.drawImage(GO_ENABLE_IMAGE, XGO,yGo,null);
+    	
     	// draw dices
     	g.drawImage(
     			imageDice1,
@@ -84,8 +86,7 @@ public class MapPanel extends JPanel{
     			imageCnt*63, 0,          // src (x1, y1)
     			(imageCnt+1)*63, 126,    // src (x2, y2)
     			null
-    			);
-    	
+    			);    	
     	g.drawImage(
     			imageDice2,
     			DICE2_X, DICE2_Y,        // dst (x1, y1)
@@ -100,6 +101,7 @@ public class MapPanel extends JPanel{
     		properties[i].drawStar(g);
     	}
     	
+    	// down right edge, 9 properties, id from 8 down to 0
      	int id;
     	for (int i = 0; i < 9; i++) {
     		id = 8 - i;
@@ -118,8 +120,8 @@ public class MapPanel extends JPanel{
     		properties[id].draw(g);
     	}
     	
-    	// down left edge, 10 properties, id from 29 up to 38
-    	for (int i = 0; i < 10; i++) {
+    	// down left edge, 11 properties, id from 29 up to 39
+    	for (int i = 0; i < 11; i++) {
     		id = 29 + i;
     		properties[id].draw(g);
     	} 
@@ -127,8 +129,7 @@ public class MapPanel extends JPanel{
     	// draw players
     	for (int i = 0; i < players.size(); i++) {
     		players.get(i).draw(g);    		
-    	}
-    	
+    	}    	
     }
     
     
@@ -167,10 +168,10 @@ public class MapPanel extends JPanel{
     		y= y+28;
     	}
     	
-    	// down left edge, 10 properties, id from 29 up to 38
+    	// down left edge, 11 properties, id from 29 up to 39
     	x = xRoad + 877;  // id = 29
     	y = yRoad + 320;  // id = 29
-    	for (int i = 0; i < 10; i++) {
+    	for (int i = 0; i < 11; i++) {
     		id = 29 + i;
     		properties[id].setLocation(x, y);
     		x = x-40;
@@ -209,24 +210,23 @@ public class MapPanel extends JPanel{
     	}
     }
     
-    //private boolean isOwned(int properties[]) {
-    	//if () {
-    		
-    	//}
-    //}
+    
     ////////////////////////////////////////////////////////////////////////////////////////////
     // Test
     ////////////////////////////////////////////////////////////////////////////////////////////    
 	public void test() {
-        properties[1].updPrivateProperty(0, "Peter", null);
-        properties[2].updPrivateProperty(1, "Peter", null);
-        properties[3].updPrivateProperty(2, "Peter", null);
-        properties[4].updPrivateProperty(3, "Peter", null);
-        properties[5].updPrivateProperty(4, "Peter", null);
-        properties[6].updPrivateProperty(5, "Peter", null); 
-        players.add(new Player("Peter", 0, 0, true));
-        players.add(new Player("Judy",  1, 1, true));    
+		Player peter = new Player("Peter", 0, 0, true);
+		Player judy  = new Player("Judy",  1, 1, true);
+				
+        players.add(peter);
+        players.add(judy);    
         
+        properties[1].updPrivateProperty(0, peter.getName(), peter.getImageStar());
+        properties[2].updPrivateProperty(1, peter.getName(), peter.getImageStar());
+        properties[3].updPrivateProperty(2, peter.getName(), peter.getImageStar());
+        properties[4].updPrivateProperty(3, judy.getName(), judy.getImageStar());
+        properties[5].updPrivateProperty(4, judy.getName(), judy.getImageStar());
+        properties[6].updPrivateProperty(5, judy.getName(), judy.getImageStar());
         
 	}
     
@@ -239,8 +239,8 @@ public class MapPanel extends JPanel{
 				rollDice(dice1, dice2);
 				int currStep = players.get(playerNum).getStep();
 				int nextStep = currStep + dice1 + dice2;
-				if (nextStep >= 39) {
-					nextStep = nextStep -39;
+				if (nextStep >= NUM_PROPERTY) {
+					nextStep = nextStep - NUM_PROPERTY;
 				}
 				players.get(playerNum).move(nextStep, properties);
 				

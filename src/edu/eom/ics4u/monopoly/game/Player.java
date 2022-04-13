@@ -61,7 +61,7 @@ public class Player {
     }
     
     
-    private Image getImageStar() {
+    public Image getImageStar() {
     	return STAR_IMAGES[playerId];
     }
     
@@ -69,6 +69,13 @@ public class Player {
     	return step;
     }
 
+    public String getName() {
+    	return name;
+    }
+    
+    public int getPlayerId() {
+    	return playerId;
+    }
 	// the thread need to call this method to move the player to the destination
 	public void move (int step, Property [] properties) {
 		this.step = step;
@@ -155,7 +162,9 @@ public class Player {
 			
 			// shift the frame of player image to make it animated
 			shiftCnt = shiftCnt + 1;
-			if (shiftCnt >= 4) shiftCnt = 0;
+			if (shiftCnt >= 4) {
+				shiftCnt = 0;
+			}
 			
 			// sleep
 			try	{
