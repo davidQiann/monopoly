@@ -1,6 +1,7 @@
 package edu.eom.ics4u.monopoly.game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -53,6 +54,7 @@ public class MapPanel extends JPanel{
     public static final int [] EDGE_END_YS = {YROAD+358, YROAD+46,  YROAD+317, YROAD+631}; 
     
     public ArrayList<Player> players = new ArrayList<Player> ();
+    private int selectedPropertyId = 0;
 
 
     public MapPanel() {
@@ -129,7 +131,10 @@ public class MapPanel extends JPanel{
     	// draw players
     	for (int i = 0; i < players.size(); i++) {
     		players.get(i).draw(g);    		
-    	}    	
+    	}
+    	
+    	// draw the selected property information
+    	drawPropertyInfo(g, 5, 14);
     }
     
     
@@ -212,7 +217,42 @@ public class MapPanel extends JPanel{
     	}
     }
     
-    
+	public void drawPropertyInfo(Graphics g, int x, int y) {
+		Color oldColor = g.getColor();
+        g.setColor(new Color(255, 255, 255));  // white
+        g.setFont(new Font("Courier New", Font.PLAIN, 13));
+                
+        String [] infos = {        	
+    		"Name: " + properties[selectedPropertyId].getName(),            	
+    		"Owner: " + properties[selectedPropertyId].getOwnerName(), 
+        	"Location: " + properties[selectedPropertyId].getLocation(),
+        	"Rent:",
+        	"- Land          $" + properties[selectedPropertyId].getRent(0),
+        	"- House Level 1 $" + properties[selectedPropertyId].getRent(1),
+        	"- House Level 2 $" + properties[selectedPropertyId].getRent(2),
+        	"- House Level 3 $" + properties[selectedPropertyId].getRent(3),
+        	"- House Level 4 $" + properties[selectedPropertyId].getRent(4),
+        	"- Hotel         $" + properties[selectedPropertyId].getRent(5),
+        	"Cost:",
+        	"- Land          $" + properties[selectedPropertyId].getPrice("land"),
+        	"- House         $" + properties[selectedPropertyId].getPrice("house"),
+        	"- Hotel         $" + properties[selectedPropertyId].getPrice("hotel")
+        };
+        
+        int rows = infos.length;
+        if (properties[selectedPropertyId].getPropertyType() == "public") {
+        	rows = 3;
+        }
+        
+        int strY = y;        
+        for (int i = 0; i < rows; i++) {        	
+        	g.drawString(infos[i], x, strY);
+        	strY += 14;        	
+        }
+        
+        g.setColor(oldColor);
+	}
+	
     ////////////////////////////////////////////////////////////////////////////////////////////
     // Test
     ////////////////////////////////////////////////////////////////////////////////////////////    
@@ -250,6 +290,7 @@ public class MapPanel extends JPanel{
 				if (nextStep >= NUM_PROPERTY) {
 					nextStep = nextStep - NUM_PROPERTY;
 				}
+				selectedPropertyId = nextStep;
 				players.get(playerNum).move(nextStep, properties);
 				
 			}

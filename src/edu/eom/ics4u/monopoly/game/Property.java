@@ -315,6 +315,10 @@ public class Property {
 		}
 		return value;
 	}
+	
+	public String getPropertyType () {
+		return type;
+	}
 
 	public void updPrivateProperty(int level, String ownerName, Image imageStar) {
 		this.level = level;
