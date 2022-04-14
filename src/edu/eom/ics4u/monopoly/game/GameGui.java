@@ -188,9 +188,10 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
 				int dice2 = rand.nextInt(6) + 1;
 				mapPanel.testGo(dice1,dice2,turns);
 				turns = turns+1;
-				if (turns == 2) {
+				if (turns == mapPanel.players.size()) {
 					turns=0;
 				}
+				
 			}
 		}
 	}

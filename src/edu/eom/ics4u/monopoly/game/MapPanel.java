@@ -53,8 +53,8 @@ public class MapPanel extends JPanel{
     public static final int [] EDGE_END_YS = {YROAD+358, YROAD+46,  YROAD+317, YROAD+631}; 
     
     public ArrayList<Player> players = new ArrayList<Player> ();
-    
-    
+
+
     public MapPanel() {
     	
     	// only for test begin
@@ -187,18 +187,20 @@ public class MapPanel extends JPanel{
     	yGo = YGO; 
     }
     
-    public boolean goClicked(int x, int y) {
-    	Rectangle goArea = new Rectangle(XGO,YGO,GO_ENABLE_IMAGE.getWidth(null), GO_ENABLE_IMAGE.getHeight(null));
-    	if (goArea.contains(x,y)) {
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
-    }    
     
+    public boolean goClicked(int x, int y) {
+		Rectangle goArea = new Rectangle(XGO,YGO,GO_ENABLE_IMAGE.getWidth(null), GO_ENABLE_IMAGE.getHeight(null));
+		
+		if (goArea.contains(x,y)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+   
     public void rollDice(int dice1,int dice2) {
-    	imageDice1 = DICE_IMAGES[dice1-1];
+        imageDice1 = DICE_IMAGES[dice1-1];
     	imageDice2 = DICE_IMAGES[dice2-1];
     	
     	for (imageCnt = 0; imageCnt < 9; imageCnt++) {
@@ -217,16 +219,22 @@ public class MapPanel extends JPanel{
 	public void test() {
 		Player peter = new Player("Peter", 0, 0, true);
 		Player judy  = new Player("Judy",  1, 1, true);
-				
+		Player tom   = new Player("Tom", 2, 2, true);
+		Player alice   = new Player("Alice", 1, 3, true);
+		
         players.add(peter);
-        players.add(judy);    
+        players.add(judy);
+        players.add(tom);
+        players.add(alice);
         
         properties[1].updPrivateProperty(0, peter.getName(), peter.getImageStar());
         properties[2].updPrivateProperty(1, peter.getName(), peter.getImageStar());
-        properties[3].updPrivateProperty(2, peter.getName(), peter.getImageStar());
+        properties[3].updPrivateProperty(2, judy.getName(), judy.getImageStar());
         properties[4].updPrivateProperty(3, judy.getName(), judy.getImageStar());
-        properties[5].updPrivateProperty(4, judy.getName(), judy.getImageStar());
-        properties[6].updPrivateProperty(5, judy.getName(), judy.getImageStar());
+        properties[5].updPrivateProperty(4, tom.getName(), tom.getImageStar());
+        properties[6].updPrivateProperty(5, tom.getName(), tom.getImageStar());
+        properties[10].updPrivateProperty(0, alice.getName(), alice.getImageStar());
+        properties[11].updPrivateProperty(1, alice.getName(), alice.getImageStar());
         
 	}
     

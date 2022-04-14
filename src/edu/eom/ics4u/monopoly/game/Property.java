@@ -17,6 +17,9 @@ public class Property {
 	private int xPlayer,yPlayer;
     private boolean isOwned;
    	private Image image, imageStar;
+   	private boolean isFreezed = false;
+   	private boolean isLoaned = false;
+   	
 	
 	// 0 - land, 1~4 - house, 5 - hotel
 	public static final Image [] LHH_BLUE_IMAGES = {
@@ -275,6 +278,42 @@ public class Property {
 		}else {
 			return PRICES[id][2];
 		}
+	}
+	
+	public boolean isFreezed() {
+		return isFreezed;
+	}
+	
+	public void setFreezed(boolean isFreezed) {
+		this.isFreezed = isFreezed;
+	}
+	
+	public boolean isLoaned() {
+		return isLoaned;
+	}
+	
+	public void setLoaned(boolean isLoaned) {
+		this.isLoaned = isLoaned;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getOwnerName() {
+		return ownerName;
+	}
+	
+	public int getValue() {
+		int value = 0; 
+		if (level ==0) {
+			value = PRICES[id][0];
+		}else if(level < 5){
+			value = PRICES[id][1]*level + PRICES[id][0];
+		}else {
+			value = PRICES[id][3] + PRICES[id][1]*4 + PRICES[id][0];
+		}
+		return value;
 	}
 
 	public void updPrivateProperty(int level, String ownerName, Image imageStar) {
