@@ -11,6 +11,12 @@ public class Player {
 	private String name;
 	private int playerId;
 	private boolean isMe;
+	private boolean isActive;
+	private int cash;
+	private int saving;
+	private int loan;
+	private int hospitalStatus;
+	
     public static final Image [] [] CHARACTERS = {
     	{ new ImageIcon(Player.class.getResource("/Images/character1DL.png")).getImage(),
     	  new ImageIcon(Player.class.getResource("/Images/character1UL.png")).getImage(),
@@ -76,6 +82,47 @@ public class Player {
     public int getPlayerId() {
     	return playerId;
     }
+    
+    public boolean isActive() {
+    	return isActive;
+    }
+    
+    public void setActive(boolean isActive) {
+    	this.isActive = isActive;
+    }
+    
+    public int getCash() {
+    	return cash;
+    }
+    
+    public void setCash(int cash){
+    	this.cash = cash;
+    }
+    
+    public int getSaving() {
+    	return saving;
+    }
+    
+    public void setSaving(int saving) {
+    	this.saving = saving;
+    }
+    
+    public int getLoan() {
+    	return loan;
+    }
+    
+    public void setLoan(int loan) {
+    	this.loan = loan;
+    }
+    
+    public int getHospitalstatus() {
+    	return hospitalStatus;
+    }
+    
+    public void setHospitalstatus(int hospitalStatus) {
+    	this.hospitalStatus = hospitalStatus;
+    }
+    
 	// the thread need to call this method to move the player to the destination
 	public void move (int step, Property [] properties) {
 		this.step = step;
