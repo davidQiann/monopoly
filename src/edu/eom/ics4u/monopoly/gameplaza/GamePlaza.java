@@ -243,7 +243,7 @@ public class GamePlaza extends JFrame implements ActionListener{
 	public void startGameButton() {
 		
 		// only for test begin
-		new GameGui();
+		new GameGui(0, "Peter");
 		// only for test end
 		
 		// check if the player join a room successful or not.

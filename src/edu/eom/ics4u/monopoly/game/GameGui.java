@@ -48,7 +48,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     private int turns = 0;
     
     private JTextArea goEnableArea = new JTextArea();;
-    public GameGui(){
+    public GameGui(int roomId, String myName){
     	setBounds(0,0,GUI_WIDTH,GUI_HEIGHT);
     	setLayout(null);
     	
