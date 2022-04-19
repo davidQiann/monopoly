@@ -51,7 +51,7 @@ public class Player {
 	private static final int [] X_DELTAS = {-7,  7, 7, -7};
     private static final int [] Y_DELTAS = {-5, -5, 5,  5};
     
-    public Player(String name, int characterId, int playerId, boolean isMe) {
+    public Player(int roomId, String name, int characterId, int playerId, boolean isMe) {
     	this.name = name;
     	this.characterId = characterId;
     	this.playerId = playerId;
@@ -78,6 +78,10 @@ public class Player {
     public String getName() {
     	return name;
     }
+    
+    public void setPlayerId(int id) {
+		 playerId  = id;
+	}
     
     public int getPlayerId() {
     	return playerId;

@@ -235,6 +235,18 @@ public class Property {
 		xStar = x+ STAR_XOFFSETS[edge];
 		yStar = y+ STAR_YOFFSETS[edge];
 	}
+	
+	public void Reset() {
+		ownerName = null;
+		imageStar = null;
+		level = 0;
+		if (type.equals("public")) {
+			
+		} else {
+			image = UNOWNED_LAND_IMAGE;
+			name = "unowned land";
+		}
+	}
 
 	public int getXplayer() {
 		return xPlayer;

@@ -257,10 +257,10 @@ public class MapPanel extends JPanel{
     // Test
     ////////////////////////////////////////////////////////////////////////////////////////////    
 	public void test() {
-		Player peter = new Player("Peter", 0, 0, true);
-		Player judy  = new Player("Judy",  1, 1, true);
-		Player tom   = new Player("Tom", 2, 2, true);
-		Player alice   = new Player("Alice", 1, 3, true);
+		Player peter = new Player(0, "Peter", 0, 0, true);
+		Player judy  = new Player(0, "Judy",  1, 1, true);
+		Player tom   = new Player(0, "Tom", 2, 2, true);
+		Player alice = new Player(0, "Alice", 1, 3, true);
 		
         players.add(peter);
         players.add(judy);
