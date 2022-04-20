@@ -11,7 +11,7 @@ public class Player {
 	private String name;
 	private int playerId;
 	private boolean isMe;
-	private boolean isActive;
+	private boolean isActive = true;
 	private int cash;
 	private int saving;
 	private int loan;

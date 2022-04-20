@@ -19,7 +19,9 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import edu.eom.ics4u.monopoly.game.GameGui;
+import edu.eom.ics4u.monopoly.model.LogicResult;
 //import javax.swing.text.html.AccessibleHTML.TableElementInfo.TableAccessibleContext;
+import edu.eom.ics4u.monopoly.model.Model;
 
 
 public class GamePlaza extends JFrame implements ActionListener{
@@ -42,23 +44,25 @@ public class GamePlaza extends JFrame implements ActionListener{
 	private JLabel characterLabel1,characterLabel2,characterLabel3;
 	private ButtonGroup radioCharacterGroup;
 	private ButtonGroup gameModeButtonGroup;
-	private JRadioButton radioGameMode1,radioGameMode2;
+	private JRadioButton radioNormalMode,radioRoundMode;
 	private JLabel gameModeLabel;
 	private JLabel normalModeLabel;
 	private JLabel roundModeLabel;
 	private JButton joinVisitor,joinPlayer,startGameButton;
 	private JLabel infoLabel;
 	
-	private String name;
+	public String name;
 	private int characterId;
-	private int roomId;
+	public int roomId;
 	private int gameMode;
-	private boolean isJoinRoom = true;
+	public boolean isJoinRoom = true;
 	
-	private GRoomTableModel gRoomTableModel;
+	public GRoomTableModel gRoomTableModel;
 	private JTable gRoomTable;	
 	private JScrollPane roomsScrollPane;
 	private Object roomDataContainer;
+	
+	private Model model = Model.getInstance();
 	
 	public GamePlaza() {
 		setTitle("Game Plaza");
@@ -110,15 +114,16 @@ public class GamePlaza extends JFrame implements ActionListener{
 	    roundModeLabel = new JLabel("Round Mode");
 	    roundModeLabel.setBounds(60,513,100,25);
 	    add(roundModeLabel);
-	    radioGameMode1 = new JRadioButton();
-	    radioGameMode2 = new JRadioButton();
+	    radioNormalMode = new JRadioButton();
+	    radioRoundMode = new JRadioButton();
+	    radioNormalMode.setBounds(30,485,20,20);
+	    radioRoundMode.setBounds(30,515,20,20);
 	    gameModeButtonGroup = new ButtonGroup();
-	    gameModeButtonGroup.add(radioGameMode1);
-	    gameModeButtonGroup.add(radioGameMode2);
-	    radioGameMode1.setBounds(30,485,20,20);
-	    radioGameMode2.setBounds(30,515,20,20);
-	    add(radioGameMode1);
-	    add(radioGameMode2);
+	    gameModeButtonGroup.add(radioNormalMode);
+	    gameModeButtonGroup.add(radioRoundMode);
+	    radioNormalMode.setSelected(true);
+	    add(radioNormalMode);
+	    add(radioRoundMode);
 	    
 	    joinVisitor = new JButton("Visitor");
 	    joinVisitor.setBounds(PLAZA_WIDTH-315,PLAZA_HEIGHT-80,90,30);
@@ -154,6 +159,9 @@ public class GamePlaza extends JFrame implements ActionListener{
 		
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		Thread eventHandlerThread = new Thread(new PlazaEventHandler(this));
+		eventHandlerThread.start();
 	}
 
 
@@ -215,7 +223,12 @@ public class GamePlaza extends JFrame implements ActionListener{
 		}
 		
 		// 4. send a join request to the gameLogic
-		//TODO      
+		LogicResult result = model.rooms.get(roomId).getRoomlogic().UserJoin(roomId, name, characterId);
+		if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
+			infoLabel.setForeground(Color.red);
+			infoLabel.setText(result.getMessage());
+			return;
+		}
 		
 		System.out.printf("Name = %s, characterId = %d\n", name, characterId);
 		infoLabel.setForeground(Color.black);
@@ -243,7 +256,7 @@ public class GamePlaza extends JFrame implements ActionListener{
 	public void startGameButton() {
 		
 		// only for test begin
-		new GameGui(0, "Peter");
+		//new GameGui(0, "Peter");
 		// only for test end
 		
 		// check if the player join a room successful or not.
@@ -258,9 +271,9 @@ public class GamePlaza extends JFrame implements ActionListener{
 		}
 		
 		//check if the player select a game mode or not
-		if (radioGameMode1.isSelected()== true){
+		if (radioNormalMode.isSelected()== true){
 			gameMode = 0;
-		} else if (radioGameMode2.isSelected()== true){
+		} else if (radioRoundMode.isSelected()== true){
 			gameMode = 1;
 		}else {
 			infoLabel.setForeground(Color.red);
@@ -268,8 +281,13 @@ public class GamePlaza extends JFrame implements ActionListener{
 			return;
 		}
 		
-		// send a game start request to the gameLogic
-		// TODO
+		// send a game start request to the gameLogic		
+		LogicResult result = model.rooms.get(roomId).getRoomlogic().StartGame(name, roomId);
+		if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
+			infoLabel.setForeground(Color.red);
+			infoLabel.setText(result.getMessage());
+			return;
+		}
 		
 		
 		System.out.printf("game mode = %d\n", gameMode);

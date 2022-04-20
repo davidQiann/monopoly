@@ -4,6 +4,10 @@ package edu.eom.ics4u.monopoly.gameplaza;
 
 import javax.swing.table.AbstractTableModel;
 
+import edu.eom.ics4u.monopoly.model.Model;
+import edu.eom.ics4u.monopoly.model.RoomModel;
+import edu.eom.ics4u.monopoly.game.Player;
+
 public class GRoomTableModel extends AbstractTableModel {	
 	/**
 	 * 
@@ -111,6 +115,42 @@ public class GRoomTableModel extends AbstractTableModel {
     
     public boolean isRoomSelected(int roomId){
     	return (boolean)data[roomId][COL_CHOOSE_ROOM];
+    }
+    
+    public void updRoom(int roomId) {
+    	RoomModel roomModel = Model.getInstance().rooms.get(roomId);
+    	
+    	int nplayers = roomModel.players.size();
+    	setValueAt(nplayers, roomId, COL_NPLAYERS);
+    	
+    	int roomStatus = roomModel.getStatus(); 
+    	if (nplayers == 0) {
+    		setValueAt("Empty", roomId, COL_STATUS);
+    	} else if (roomStatus == RoomModel.STATUS_PENDING) {
+    		if (nplayers == 4) {
+    			setValueAt("Full", roomId, COL_STATUS);
+    		} else {
+    			setValueAt("Waiting to start", roomId, COL_STATUS);
+    		}    		
+    	} else if (roomStatus == RoomModel.STATUS_STARTED) { 
+    		setValueAt("Playing", roomId, COL_STATUS);
+    	} else {
+    		setValueAt("Empty", roomId, COL_STATUS);
+    	}
+    	
+    	// clear table view for player
+    	for (int i = 0; i < 4; i++) {
+    		setValueAt("", roomId, COL_PLAYER0+i);
+    	}
+    	
+    	// update table view for player
+    	int playerId;
+    	String playerName;
+    	for (Player player: roomModel.players.values()) {
+    		playerId = player.getPlayerId();
+    		playerName = player.getName();
+    		setValueAt(playerName, roomId, COL_PLAYER0+playerId);
+    	}     	
     }
     
 }

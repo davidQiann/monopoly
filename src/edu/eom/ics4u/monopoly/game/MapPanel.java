@@ -7,10 +7,14 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import edu.eom.ics4u.monopoly.model.Model;
+import edu.eom.ics4u.monopoly.model.RoomModel;
 
 public class MapPanel extends JPanel{
 	private static Color bkgColor = new Color(7,44,77);
@@ -53,25 +57,18 @@ public class MapPanel extends JPanel{
     public static final int [] EDGE_END_XS = {XROAD+62,  XROAD+510, XROAD+897, XROAD+452};
     public static final int [] EDGE_END_YS = {YROAD+358, YROAD+46,  YROAD+317, YROAD+631}; 
     
-    public ArrayList<Player> players = new ArrayList<Player> ();
     private int selectedPropertyId = 0;
+    
+    private int roomId;
+    private RoomModel roomModel;
+    private String turnPlayer = null;
 
 
-    public MapPanel() {
-    	
-    	// only for test begin
-    	for (int i = 0; i < NUM_PROPERTY; i++) {
-    		properties[i] = new Property(i, "private", "unowned");
-    	}
-    	properties[9] = new Property(9, "public", "bank");
-    	properties[19] = new Property(19, "public", "park");
-    	properties[29] = new Property(29,"public","hospital");
-    	properties[39] = new Property(39,"public","START");
-    	// only for test begin
-    	
+    public MapPanel(int roomId) {
+    	this.roomId = roomId;
+    	roomModel = Model.getInstance().rooms.get(roomId);
+    	properties = roomModel.properties;    	
     	calcPropertyCoor(XROAD,YROAD);
-    	
-    	test(); // only for test
     }
     
     public void paint(Graphics g) {
@@ -129,8 +126,8 @@ public class MapPanel extends JPanel{
     	} 
     	
     	// draw players
-    	for (int i = 0; i < players.size(); i++) {
-    		players.get(i).draw(g);    		
+    	for (Player player: roomModel.players.values()) {
+    		player.draw(g);
     	}
     	
     	// draw the selected property information
@@ -253,46 +250,37 @@ public class MapPanel extends JPanel{
         g.setColor(oldColor);
 	}
 	
+	public void setTurn(String playerName) {
+		turnPlayer = playerName;
+	}
+	
+	public String getTurn() {
+		return turnPlayer;
+	}
+	
     ////////////////////////////////////////////////////////////////////////////////////////////
     // Test
     ////////////////////////////////////////////////////////////////////////////////////////////    
-	public void test() {
-		Player peter = new Player(0, "Peter", 0, 0, true);
-		Player judy  = new Player(0, "Judy",  1, 1, true);
-		Player tom   = new Player(0, "Tom", 2, 2, true);
-		Player alice = new Player(0, "Alice", 1, 3, true);
-		
-        players.add(peter);
-        players.add(judy);
-        players.add(tom);
-        players.add(alice);
-        
-        properties[1].updPrivateProperty(0, peter.getName(), peter.getImageStar());
-        properties[2].updPrivateProperty(1, peter.getName(), peter.getImageStar());
-        properties[3].updPrivateProperty(2, judy.getName(), judy.getImageStar());
-        properties[4].updPrivateProperty(3, judy.getName(), judy.getImageStar());
-        properties[5].updPrivateProperty(4, tom.getName(), tom.getImageStar());
-        properties[6].updPrivateProperty(5, tom.getName(), tom.getImageStar());
-        properties[10].updPrivateProperty(0, alice.getName(), alice.getImageStar());
-        properties[11].updPrivateProperty(1, alice.getName(), alice.getImageStar());
-        
-	}
-    
-	
-	
-	public void testGo(int dice1, int dice2, int playerNum) {
+	public void testGo() {
         
 		Thread t = new Thread(new Runnable(){
 			 public void run(){
-				rollDice(dice1, dice2);
-				int currStep = players.get(playerNum).getStep();
+				Player player = roomModel.players.get(turnPlayer);
+				
+				Random rand = new Random();
+				int dice1 = rand.nextInt(6) + 1;
+				int dice2 = rand.nextInt(6) + 1;				
+				rollDice(dice1, dice2);				
+				int currStep = player.getStep(); // players.get(playerNum).getStep();
 				int nextStep = currStep + dice1 + dice2;
 				if (nextStep >= NUM_PROPERTY) {
 					nextStep = nextStep - NUM_PROPERTY;
 				}
 				selectedPropertyId = nextStep;
-				players.get(playerNum).move(nextStep, properties);
+				player.move(nextStep, properties);
 				
+				// next player
+				turnPlayer = roomModel.getUserTurn(turnPlayer);				
 			}
 		});
 		t.start(); 

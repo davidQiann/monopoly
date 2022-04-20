@@ -18,6 +18,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import edu.eom.ics4u.monopoly.model.Model;
+import edu.eom.ics4u.monopoly.model.RoomModel;
+
 public class GameGui extends JFrame implements WindowListener,MouseListener{
 	
 	public static final int MAP_X = 5;
@@ -44,15 +47,24 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     private JTable chartsTable;
     private JButton exportButton;
     private ChartsTableModel chartsTableModel;
-    private MapPanel mapPanel;
+    public MapPanel mapPanel;
     private int turns = 0;
     
     private JTextArea goEnableArea = new JTextArea();;
+    
+    private int roomId;
+    private RoomModel roomModel;
+    private String myName;
+    
     public GameGui(int roomId, String myName){
+    	this.roomId = roomId;
+    	roomModel = Model.getInstance().rooms.get(roomId);
+    	this.myName = myName;
+    	
     	setBounds(0,0,GUI_WIDTH,GUI_HEIGHT);
     	setLayout(null);
     	
-    	mapPanel = new MapPanel();
+    	mapPanel = new MapPanel(roomId);
     	mapPanel.setBounds(MAP_X, MAP_Y, MAP_WIDTH, MAP_HEIGHT);
     	add(mapPanel);
     	
@@ -179,19 +191,12 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == mapPanel) {
-			System.out.printf("Test turn = %d \n",turns);
 			if (mapPanel.goClicked(e.getX(),e.getY()) == true){
 				mapPanel.goDown();
 				
-				Random rand = new Random();
-				int dice1 = rand.nextInt(6) + 1;
-				int dice2 = rand.nextInt(6) + 1;
-				mapPanel.testGo(dice1,dice2,turns);
-				turns = turns+1;
-				if (turns == mapPanel.players.size()) {
-					turns=0;
-				}
-				
+				// for test begin
+				mapPanel.testGo();
+				// for test end
 			}
 		}
 	}
