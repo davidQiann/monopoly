@@ -18,6 +18,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import edu.eom.ics4u.monopoly.gameplaza.PlazaEventHandler;
 import edu.eom.ics4u.monopoly.model.Model;
 import edu.eom.ics4u.monopoly.model.RoomModel;
 
@@ -117,6 +118,8 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     	
     	mapPanel.addMouseListener(this);
     	
+    	Thread eventHandlerThread = new Thread(new GameEventHandler(this, roomId));
+		eventHandlerThread.start();
     	
     }
     

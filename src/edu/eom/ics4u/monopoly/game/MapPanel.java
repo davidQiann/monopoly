@@ -62,6 +62,8 @@ public class MapPanel extends JPanel{
     private int roomId;
     private RoomModel roomModel;
     private String turnPlayer = null;
+    
+    private boolean goEnable = true;
 
 
     public MapPanel(int roomId) {
@@ -75,7 +77,13 @@ public class MapPanel extends JPanel{
     	g.setColor(bkgColor);
     	g.fillRect(0, 0, GameGui.MAP_WIDTH, GameGui.MAP_HEIGHT);
     	g.drawImage(ROAD_IMAGE, XROAD, YROAD, null);
-    	g.drawImage(GO_ENABLE_IMAGE, XGO,yGo,null);
+    	
+    	if (goEnable == true) {
+    		g.drawImage(GO_ENABLE_IMAGE, XGO,yGo,null);
+    	} else {
+    		g.drawImage(GO_DISABLE_IMAGE, XGO,yGo,null);
+    	}
+    	
     	
     	// draw dices
     	g.drawImage(
@@ -189,6 +197,9 @@ public class MapPanel extends JPanel{
     	yGo = YGO; 
     }
     
+    public void setGoEnable(boolean enable) {
+        goEnable = enable;	
+    }
     
     public boolean goClicked(int x, int y) {
 		Rectangle goArea = new Rectangle(XGO,YGO,GO_ENABLE_IMAGE.getWidth(null), GO_ENABLE_IMAGE.getHeight(null));

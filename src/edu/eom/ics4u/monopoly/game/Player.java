@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 
 public class Player {
 	private String name;
-	private int playerId;
+	public int playerId;
 	private boolean isMe;
 	private boolean isActive = true;
 	private int cash;
@@ -73,6 +73,10 @@ public class Player {
     
     public int getStep() {
     	return step;
+    }
+    
+    public boolean getIsMe() {
+    	return isMe;
     }
 
     public String getName() {
