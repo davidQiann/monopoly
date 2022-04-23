@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -49,9 +50,11 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     private JButton exportButton;
     private ChartsTableModel chartsTableModel;
     public MapPanel mapPanel;
-    private int turns = 0;
     
-    private JTextArea goEnableArea = new JTextArea();;
+    private JLabel myTransLabel;
+    private JLabel operationLabel;
+    public ArrayList <String> myTrans = new ArrayList<String>();
+    public ArrayList <String> operations = new ArrayList<String>();
     
     private int roomId;
     private RoomModel roomModel;
@@ -68,7 +71,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     	mapPanel = new MapPanel(roomId);
     	mapPanel.setBounds(MAP_X, MAP_Y, MAP_WIDTH, MAP_HEIGHT);
     	add(mapPanel);
-    	
+      	
     	operationPanel = new JPanel();
     	operationPanel.setBounds(RIGHT_ZONE_X, OPERATION_Y, RIGHT_ZONE_WIDTH, OPERATION_HEIGHT);
         operationPanel.setBorder(BorderFactory.createTitledBorder(
@@ -81,6 +84,12 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     	)); 
         operationPanel.setLayout(null);
     	add(operationPanel);
+
+        operationLabel = new JLabel();
+        operationLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
+        operationLabel.setBounds(10, 25, RIGHT_ZONE_WIDTH-20, OPERATION_HEIGHT-35);
+        operationLabel.setVerticalAlignment(JLabel.BOTTOM);
+        operationPanel.add(operationLabel);    	
     	
     	transitionPanel = new JPanel();
     	transitionPanel.setBounds(RIGHT_ZONE_X, MY_TRANS_Y, RIGHT_ZONE_WIDTH, MY_TRANS_HEIGHT);
@@ -89,11 +98,18 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     			" My Transition ",
     			TitledBorder.DEFAULT_JUSTIFICATION,
     			TitledBorder.DEFAULT_POSITION,
+    			
     			new Font("Dialog", Font.BOLD, 16),
     			new Color(0, 0, 0)
     	)); 
     	transitionPanel.setLayout(null);
      	add(transitionPanel);
+     	
+        myTransLabel = new JLabel();
+        myTransLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
+        myTransLabel.setBounds(10, 25, RIGHT_ZONE_WIDTH-20, MY_TRANS_HEIGHT-35-35);
+        myTransLabel.setVerticalAlignment(JLabel.BOTTOM);
+        transitionPanel.add(myTransLabel);
     	
     	exportButton = new JButton("Export");
     	exportButton.setBounds(RIGHT_ZONE_WIDTH-90,MY_TRANS_HEIGHT-35,80,25);
@@ -119,8 +135,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     	mapPanel.addMouseListener(this);
     	
     	Thread eventHandlerThread = new Thread(new GameEventHandler(this, roomId));
-		eventHandlerThread.start();
-    	
+		eventHandlerThread.start();    	
     }
     
     private class PaintThread extends Thread {
@@ -139,6 +154,43 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     	}
     }
 
+    // shift and show transaction
+    public void shiftShowTrans (String trans, boolean isMe) {
+    	String message;
+    	
+    	// shift and show my transaction
+    	if (isMe == true) {
+     		if (myTrans.size() >= 10) {
+     			myTrans.remove(0);
+     		}
+     		myTrans.add(trans);     		
+    		message = "<html>";
+    		for (int i = 0; i < myTrans.size(); i++) {
+    			message = message + myTrans.get(i);
+    			if (i != myTrans.size()-1) {
+    				message = message + "<br>";
+    			}
+    		}
+    		message = message + "</html>";    		
+    		myTransLabel.setText(message);
+    	}
+    	
+    	// shift and show all players' operations
+    	if (operations.size() >= 20) {
+ 			operations.remove(0);
+ 		}
+ 		operations.add(trans); 		
+ 		message = "<html>";
+		for (int i = 0; i < operations.size(); i++) {
+			message = message + operations.get(i);
+			if (i != operations.size()-1) {
+				message = message + "<br>";
+			}
+		}
+		message = message + "</html>";		
+		operationLabel.setText(message);	
+ 	}
+    
 	@Override
 	public void windowOpened(WindowEvent e) {
 		// TODO Auto-generated method stub
@@ -198,7 +250,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
 				mapPanel.goDown();
 				
 				// for test begin
-				mapPanel.testGo();
+				//mapPanel.testGo();
 				// for test end
 			}
 		}
