@@ -126,7 +126,7 @@ public class GameEventHandler extends Thread{
 					nextStep = nextStep - MapPanel.NUM_PROPERTY;
 				}
 				
-				// if passing the bank, stop at the bank and do the bank transfer
+				// if passing the bank, stop at the bank first and do the bank transfer
 				if (player.getIsMe() == true) {
 					System.out.println("test is me");
 					if (((nextStep-nStep) < BANK_ID) && (nextStep > BANK_ID)) {
@@ -139,12 +139,13 @@ public class GameEventHandler extends Thread{
 				// move the target location - nextSteps
 				player.move(nextStep);
 				if (player.getIsMe() == true) {
-					playerActions(player, nextStep);
+					game.mapPanel.selectedPropertyId = nextStep;
+					playerActions(player, nextStep);					
 				}
 				
 				LogicResult result = roomModel.getRoomlogic().TurnDone(playerName, roomId); 
 				if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
-					//TODO
+					popConfirmDialog(result.getMessage());
 				}
 			}
 			
@@ -192,15 +193,53 @@ public class GameEventHandler extends Thread{
     }
     
     public void buyLandReq(Player player, int propertyId) {
-    	//TODO
+		Property property = roomModel.properties[propertyId];		
+		int price = property.getPrice("land");
+		String location = property.getLocation();
+        
+		String str;
+		str = "The land on the " + location + " cost $" + price +", do you want to purchase?";
+		int input = popOptionDialog(str);		
+		if (input == 0) {
+			System.out.printf(">>> Game GUI call BuyLand API, name = %s, room id = %d, land id = %d.\n", player.getName(), roomId, propertyId);
+			LogicResult result = roomModel.getRoomlogic().BuyLand(player.getName(), roomId, propertyId);
+			if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
+				popConfirmDialog(result.getMessage());
+			}
+        }
     }
     
     public void buildHouseReq(Player player, int propertyId) {
-    	//TODO
+		Property property = roomModel.properties[propertyId];
+		int newLevel = property.getLevel() + 1;
+		int price = property.getPrice(newLevel);		
+		String location = property.getLocation();
+        
+		String str;
+		str = "Do you want to upgrade the building on the " + location + "? it will cost $" + price + ".";
+		int input = popOptionDialog(str);		
+		if (input == 0) {
+			System.out.printf(">>> Game GUI call BuildHouse API, name = %s, room id = %d, land id = %d.\n", player.getName(), roomId, propertyId);
+			LogicResult result = roomModel.getRoomlogic().BuildHouse(player.getName(), roomId, propertyId);
+			if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
+				popConfirmDialog(result.getMessage());
+			}
+        }
     }
     
     public void payRentReq(Player player, int propertyId) {
-    	//TODO
+		Property property = roomModel.properties[propertyId];
+		int rent = property.getRent(property.getLevel());
+		String oName = property.getOwnerName();
+        
+		String str;
+		str = "You need to pay rent $" + rent + " to " + oName + ".";
+		popConfirmDialog(str);		
+		System.out.printf(">>> Game GUI call PayRent API, name = %s, room id = %d, land id = %d.\n", player.getName(), roomId, propertyId);
+		LogicResult result = roomModel.getRoomlogic().PayRent(player.getName(), roomId, propertyId);
+		if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
+			popConfirmDialog(result.getMessage());
+		}
     }
     
     // Pop up a confirm dialog to tell the player something. 
@@ -220,7 +259,7 @@ public class GameEventHandler extends Thread{
 	
 	// Pop up a options selection dialog.
 	// For example,  for the player to choose to buy a land or not. 
-	public int showOptionDialog(String str) {
+	public int popOptionDialog(String str) {
 		Object [] options = {"Yes", "No"};		
 		int input = JOptionPane.showOptionDialog(
 				null, 

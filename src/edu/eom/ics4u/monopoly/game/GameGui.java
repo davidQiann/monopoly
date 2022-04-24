@@ -96,7 +96,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     	transitionPanel.setBounds(RIGHT_ZONE_X, MY_TRANS_Y, RIGHT_ZONE_WIDTH, MY_TRANS_HEIGHT);
     	transitionPanel.setBorder(BorderFactory.createTitledBorder(
     			BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.BLACK, Color.WHITE),
-    			" My Transition ",
+    			" My Transcations ",
     			TitledBorder.DEFAULT_JUSTIFICATION,
     			TitledBorder.DEFAULT_POSITION,
     			

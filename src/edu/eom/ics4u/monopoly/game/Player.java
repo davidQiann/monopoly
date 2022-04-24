@@ -18,10 +18,10 @@ public class Player {
 	public int playerId;
 	private boolean isMe;
 	private boolean isActive = true;
-	private int cash;
-	private int saving;
-	private int loan;
-	private int hospitalStatus;
+	private int cash = 2000;
+	private int saving = 0;
+	private int loan = 0;
+	private int hospitalStatus = 0;
 	
     public static final Image [] [] CHARACTERS = {
     	{ new ImageIcon(Player.class.getResource("/Images/character1DL.png")).getImage(),

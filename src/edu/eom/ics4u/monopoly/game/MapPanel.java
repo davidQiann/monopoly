@@ -57,7 +57,7 @@ public class MapPanel extends JPanel{
     public static final int [] EDGE_END_XS = {XROAD+62,  XROAD+510, XROAD+897, XROAD+452};
     public static final int [] EDGE_END_YS = {YROAD+358, YROAD+46,  YROAD+317, YROAD+631}; 
     
-    private int selectedPropertyId = 0;
+    public int selectedPropertyId = 0;
     
     private int roomId;
     private RoomModel roomModel;
