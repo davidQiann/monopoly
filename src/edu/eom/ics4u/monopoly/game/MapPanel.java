@@ -48,7 +48,7 @@ public class MapPanel extends JPanel{
     private Image imageDice1 = DICE_IMAGES[4], imageDice2 = DICE_IMAGES[3];
     private int imageCnt = 9;
     
-    private static final int NUM_PROPERTY = 40;
+    public static final int NUM_PROPERTY = 40;
     private Property properties [] = new Property[NUM_PROPERTY]; // 0 - 39
 
    // DL = Down Left, UL = Up Left, UR = Up Right, DR = Down Right
@@ -201,6 +201,10 @@ public class MapPanel extends JPanel{
         goEnable = enable;	
     }
     
+    public boolean getGoEnable() {
+    	return goEnable;
+    }
+    
     public boolean goClicked(int x, int y) {
 		Rectangle goArea = new Rectangle(XGO,YGO,GO_ENABLE_IMAGE.getWidth(null), GO_ENABLE_IMAGE.getHeight(null));
 		
@@ -272,29 +276,6 @@ public class MapPanel extends JPanel{
     ////////////////////////////////////////////////////////////////////////////////////////////
     // Test
     ////////////////////////////////////////////////////////////////////////////////////////////    
-	public void testGo() {
-        
-		Thread t = new Thread(new Runnable(){
-			 public void run(){
-				Player player = roomModel.players.get(turnPlayer);
-				
-				Random rand = new Random();
-				int dice1 = rand.nextInt(6) + 1;
-				int dice2 = rand.nextInt(6) + 1;				
-				rollDice(dice1, dice2);				
-				int currStep = player.getStep(); // players.get(playerNum).getStep();
-				int nextStep = currStep + dice1 + dice2;
-				if (nextStep >= NUM_PROPERTY) {
-					nextStep = nextStep - NUM_PROPERTY;
-				}
-				selectedPropertyId = nextStep;
-				player.move(nextStep, properties);
-				
-				// next player
-				turnPlayer = roomModel.getUserTurn(turnPlayer);				
-			}
-		});
-		t.start(); 
-    }
+
 
 }

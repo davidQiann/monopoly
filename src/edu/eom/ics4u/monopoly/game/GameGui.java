@@ -20,6 +20,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import edu.eom.ics4u.monopoly.gameplaza.PlazaEventHandler;
+import edu.eom.ics4u.monopoly.model.LogicResult;
 import edu.eom.ics4u.monopoly.model.Model;
 import edu.eom.ics4u.monopoly.model.RoomModel;
 
@@ -246,12 +247,14 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == mapPanel) {
-			if (mapPanel.goClicked(e.getX(),e.getY()) == true){
-				mapPanel.goDown();
-				
-				// for test begin
-				//mapPanel.testGo();
-				// for test end
+			if (mapPanel.goClicked(e.getX(),e.getY()) == true && mapPanel.getGoEnable()== true){				
+				LogicResult result = roomModel.getRoomlogic().UserMove(mapPanel.getTurn(), roomId);
+				if (result.getResultcode() == LogicResult.RESULT_SUCCESS) {
+					mapPanel.goDown();
+					mapPanel.setGoEnable(false);
+				}else {
+					//TODO
+				}
 			}
 		}
 	}

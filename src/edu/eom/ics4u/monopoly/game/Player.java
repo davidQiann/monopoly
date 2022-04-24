@@ -7,7 +7,13 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+import edu.eom.ics4u.monopoly.model.Model;
+import edu.eom.ics4u.monopoly.model.RoomModel;
+
 public class Player {
+	private int roomId;
+	private RoomModel roomModel;
+	
 	private String name;
 	public int playerId;
 	private boolean isMe;
@@ -52,6 +58,9 @@ public class Player {
     private static final int [] Y_DELTAS = {-5, -5, 5,  5};
     
     public Player(int roomId, String name, int characterId, int playerId, boolean isMe) {
+    	this.roomId = roomId;
+    	roomModel = Model.getInstance().rooms.get(roomId);
+    	
     	this.name = name;
     	this.characterId = characterId;
     	this.playerId = playerId;
@@ -132,13 +141,13 @@ public class Player {
     }
     
 	// the thread need to call this method to move the player to the destination
-	public void move (int step, Property [] properties) {
+	public void move (int step) {
 		this.step = step;
 		
 		// set the destination coordinates 
-		int xDst   = properties[step].getXplayer();
-		int yDst   = properties[step].getYplayer();
-		int edgeDst = properties[step].getEdge();	
+		int xDst   = roomModel.properties[step].getXplayer();
+		int yDst   = roomModel.properties[step].getYplayer();
+		int edgeDst = roomModel.properties[step].getEdge();	
 		
 		boolean arrived = false;
 		while (arrived == false) {
