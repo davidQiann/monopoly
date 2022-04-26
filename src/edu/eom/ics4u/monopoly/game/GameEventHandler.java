@@ -189,7 +189,24 @@ public class GameEventHandler extends Thread{
     }
     
     public void bankTansferReq(Player player) {
-    	//TODO
+    	int oldCash = player.getCash();
+    	int oldSaving = player.getSaving();
+    	int amount;
+    	
+    	TransferDialog transferDialog = new TransferDialog(oldCash, oldSaving);
+    	if (transferDialog.transferReq == true) {
+    		if(transferDialog.fromAccount == "Cash") {
+    			amount = transferDialog.amount;
+    		}else {
+    			amount = 0 - transferDialog.amount;
+    		}
+    		
+    		System.out.printf(">>> Game GUI call BankAdjust API, name = %s, room id = %d.\n", player.getName(), roomId);
+			LogicResult result = roomModel.getRoomlogic().BankAdjust(player.getName(), roomId, amount);
+			if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
+				popConfirmDialog(result.getMessage());
+			}
+    	}
     }
     
     public void buyLandReq(Player player, int propertyId) {
