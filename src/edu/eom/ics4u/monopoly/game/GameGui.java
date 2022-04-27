@@ -49,7 +49,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     private JPanel operationPanel, transitionPanel;
     private JTable chartsTable;
     private JButton exportButton;
-    private ChartsTableModel chartsTableModel;
+    public ChartsTableModel chartsTableModel;
     public MapPanel mapPanel;
     
     private JLabel myTransLabel;

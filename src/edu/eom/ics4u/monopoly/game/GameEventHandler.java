@@ -20,6 +20,7 @@ public class GameEventHandler extends Thread{
     	this.roomId = roomId;
     	game = gameGui;
     	roomModel = Model.getInstance().rooms.get(roomId);
+    	game.chartsTableModel.updChartsTableModel(roomId);
     }
     
     public void run() {
@@ -83,6 +84,9 @@ public class GameEventHandler extends Thread{
     					// TODO
     					break;    					
     				case Event.EVENT_GOTOHOSPITAL:
+    					// TODO
+    					break;
+    				case Event.EVENT_QUITGAME:
     					// TODO
     					break;
     			}

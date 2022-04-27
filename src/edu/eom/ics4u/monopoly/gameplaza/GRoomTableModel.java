@@ -17,6 +17,7 @@ public class GRoomTableModel extends AbstractTableModel {
 	private final int NUM_ROOMS = 50;
 	
 	private String[] columnNames = {"Room ID",
+									"Mode",
                                     "Status",
                                     "Player 0",
                                     "Player 1",
@@ -27,19 +28,21 @@ public class GRoomTableModel extends AbstractTableModel {
 	private Object[][] data = new Object [NUM_ROOMS][columnNames.length];
 	
 	private static final int COL_ROOM_ID = 0;
-	private static final int COL_STATUS  = 1;
-	private static final int COL_PLAYER0 = 2;
-	private static final int COL_PLAYER1 = 3;
-	private static final int COL_PLAYER2 = 4;
-	private static final int COL_PLAYER3  = 5;
-	private static final int COL_NPLAYERS = 6;
-	private static final int COL_CHOOSE_ROOM = 7;
+	private static final int COL_MODE    = 1;
+	private static final int COL_STATUS  = 2;
+	private static final int COL_PLAYER0 = 3;
+	private static final int COL_PLAYER1 = 4;
+	private static final int COL_PLAYER2 = 5;
+	private static final int COL_PLAYER3  = 6;
+	private static final int COL_NPLAYERS = 7;
+	private static final int COL_CHOOSE_ROOM = 8;
 	
 	private int roomId = 0; 
 	
 	public GRoomTableModel () {
 		for (int i = 0; i < NUM_ROOMS; i++) {
 			data[i][COL_ROOM_ID] = Integer.valueOf(i);
+			data[i][COL_MODE]    = "Online";
 			data[i][COL_STATUS]  = "Empty";
 			data[i][COL_PLAYER0] = "";
 			data[i][COL_PLAYER1] = "";
@@ -48,6 +51,7 @@ public class GRoomTableModel extends AbstractTableModel {
 			data[i][COL_NPLAYERS] = Integer.valueOf(0);
 			data[i][COL_CHOOSE_ROOM] = Boolean.FALSE;
 		}
+		data[0][COL_MODE] = "Standalone";
 	}
 
     public int getColumnCount() {
