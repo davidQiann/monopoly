@@ -45,13 +45,13 @@ public class GameEventHandler extends Thread{
     					userMoveHandler(player, event);
     					break;    					
     				case Event.EVENT_BUYLAND:
-    					// TODO
+    					buyLandHandler(player, event);
     					break;    				
     				case Event.EVENT_BUILDHOUSE:
-    					// TODO
+    					buildHouseHandler(player, event);
     					break;    					
     				case Event.EVENT_PAYRENT:
-    					// TODO
+    					payRentHandler(player, event);
     					break;    					
     				case Event.EVENT_BANKADJUST:
     					// TODO
@@ -103,7 +103,7 @@ public class GameEventHandler extends Thread{
     }
     
     public void userGoHandler(Player player, Event event) {
-    	System.out.printf("<<< Game GUI receives a User Go event, room id = %d, user name = %s, info = %s, ts = %s\n", event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
+    	System.out.printf("\n<<< Game GUI receives a User Go event, room id = %d, user name = %s, info = %s, ts = %s\n", event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
     	
     	if (player.getIsMe() == true) {
     		game.mapPanel.setGoEnable(true);    		
@@ -132,9 +132,9 @@ public class GameEventHandler extends Thread{
 				
 				// if passing the bank, stop at the bank first and do the bank transfer
 				if (player.getIsMe() == true) {
-					System.out.println("test is me");
+					//System.out.println("test is me");
 					if (((nextStep-nStep) < BANK_ID) && (nextStep > BANK_ID)) {
-						System.out.println("test bank");
+						//System.out.println("test bank");
 						player.move(BANK_ID);
 						playerActions(player, BANK_ID);
 					}
@@ -156,6 +156,24 @@ public class GameEventHandler extends Thread{
 		});
 		t.start();
 		
+    }
+    
+    public void buyLandHandler(Player player, Event event) {
+    	System.out.printf("\n<<< Game GUI receives a Buy Land event, room id = %d, user name = %s, info = %s, ts = %s\n", event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.chartsTableModel.updChartsTable(roomId);
+    }
+    
+    public void buildHouseHandler(Player player, Event event) {
+    	System.out.printf("\n<<< Game GUI receives a Bulid House event, room id = %d, user name = %s, info = %s, ts = %s\n", event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.chartsTableModel.updChartsTable(roomId);
+    } 
+    
+    public void payRentHandler(Player player, Event event) {
+    	System.out.printf("\n<<< Game GUI receives a Pay Rent event, room id = %d, user name = %s, info = %s, ts = %s\n", event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.chartsTableModel.updChartsTable(roomId);
     }
     
     public void playerActions(Player player, int propertyId) {
