@@ -20,7 +20,7 @@ public class GameEventHandler extends Thread{
     	this.roomId = roomId;
     	game = gameGui;
     	roomModel = Model.getInstance().rooms.get(roomId);
-    	game.chartsTableModel.updChartsTableModel(roomId);
+    	game.chartsTableModel.updChartsTable(roomId);
     }
     
     public void run() {

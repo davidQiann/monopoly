@@ -65,7 +65,7 @@ public class ChartsTableModel extends AbstractTableModel {
 		fireTableCellUpdated(row, col);
     }
     
-    public void updChartsTableModel(int roomId) {
+    public void updChartsTable(int roomId) {
     	RoomModel roomModel = Model.getInstance().rooms.get(roomId);
     	
     	for (Player player: roomModel.players.values()) {
