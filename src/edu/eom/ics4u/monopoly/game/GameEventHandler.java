@@ -54,20 +54,20 @@ public class GameEventHandler extends Thread{
     					payRentHandler(player, event);
     					break;    					
     				case Event.EVENT_BANKADJUST:
-    					// TODO
+    					bankAdjustHandler(player, event);
     					break;    					
     				case Event.EVENT_SELLLAND:
-    					// TODO
+    					sellLandHandler(player, event);
     					break;    					
+    				case Event.EVENT_COLLECTMONEY:
+    					colletMoneyHandler(player,event);
+    					break;    				
     				case Event.EVENT_COMMUNITY:
     					// TODO
     					break;    					
     				case Event.EVENT_USERBANKRUPTCY:
     					// TODO
     					break;    					
-    				case Event.EVENT_COLLECTMONEY:
-    					// TODO
-    					break;    				
     				case Event.EVENT_LOANLAND:
     					// TODO
     					break;    					
@@ -176,6 +176,26 @@ public class GameEventHandler extends Thread{
     	game.chartsTableModel.updChartsTable(roomId);
     }
     
+    public void bankAdjustHandler(Player player, Event event) {
+    	System.out.printf("\n<<< Game GUI receives a Bank Adjust event, room id = %d, user name = %s, info = %s, ts = %s\n", event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.chartsTableModel.updChartsTable(roomId);
+    }
+    
+    public void sellLandHandler(Player player, Event event) {
+    	System.out.printf("\n<<< Game GUI receives a Sell Land event, room id = %d, user name = %s, info = %s, ts = %s\n", event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.chartsTableModel.updChartsTable(roomId);
+    }
+    
+    public void colletMoneyHandler(Player player, Event event) {
+    	System.out.printf("\n<<< Game GUI receives a Collet Money event, room id = %d, user name = %s, info = %s, ts = %s\n", event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.chartsTableModel.updChartsTable(roomId);
+    }
+    
+    
+    
     public void playerActions(Player player, int propertyId) {
 		Property property = roomModel.properties[propertyId];
 		
@@ -280,6 +300,8 @@ public class GameEventHandler extends Thread{
 			popConfirmDialog(result.getMessage());
 		}
     }
+    
+    
     
     // Pop up a confirm dialog to tell the player something. 
     // For example, tell the player “no enough cash, cannot buy the land”.
