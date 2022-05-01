@@ -225,7 +225,6 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
 					logicResult = roomModel.getRoomlogic().QuitGame(myName, roomId);
 					System.out.printf("--window closing-- game Id = %d, %s quit the game request\n", gameId, myName);
 				}
-				this.dispose();
 			}
 		}
 		

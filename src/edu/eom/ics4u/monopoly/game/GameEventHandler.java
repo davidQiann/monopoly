@@ -221,6 +221,10 @@ public class GameEventHandler extends Thread{
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Quit Game event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
     	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), false);
     	game.chartsTableModel.updChartsTable(roomId);
+    	
+    	if ((event.getUsername() == game.myName) || (roomId == 0)) {
+    		game.dispose();
+    	}
     }
     
     
