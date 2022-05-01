@@ -59,9 +59,14 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     
     private int roomId;
     private RoomModel roomModel;
-    private String myName;
+    public String myName;
+    private GameEventHandler gameEventHandler;
+    
+    private static int gameId = 0;
     
     public GameGui(int roomId, String myName){
+    	gameId ++;
+    	
     	this.roomId = roomId;
     	roomModel = Model.getInstance().rooms.get(roomId);
     	this.myName = myName;
@@ -135,7 +140,8 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     	
     	mapPanel.addMouseListener(this);
     	
-    	Thread eventHandlerThread = new Thread(new GameEventHandler(this, roomId));
+    	gameEventHandler = new GameEventHandler(this, roomId, gameId);
+    	Thread eventHandlerThread = new Thread(gameEventHandler);
 		eventHandlerThread.start();    	
     }
     
@@ -202,7 +208,25 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getWindow() == this) {
-			this.dispose();
+			LogicResult logicResult;
+			int result = gameEventHandler.popOptionDialog("Are you sure to quit the game?");
+			if (result == 0) {
+				if (roomId == 0) {
+					ArrayList <String> playerNames = new ArrayList<String> ();
+					for (Player player: roomModel.players.values()) {
+						playerNames.add(player.getName());
+					}
+					
+					for (int i =0; i < playerNames.size(); i++) {
+						logicResult = roomModel.getRoomlogic().QuitGame(playerNames.get(i), roomId);
+						System.out.printf("--window closing-- game Id = %d, %s quit the game request\n", gameId, playerNames.get(i));
+					}					
+				} else {
+					logicResult = roomModel.getRoomlogic().QuitGame(myName, roomId);
+					System.out.printf("--window closing-- game Id = %d, %s quit the game request\n", gameId, myName);
+				}
+				this.dispose();
+			}
 		}
 		
 	}
@@ -253,7 +277,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
 					mapPanel.goDown();
 					mapPanel.setGoEnable(false);
 				}else {
-					//TODO
+					//TODO TurnDone() to switch to next player
 				}
 			}
 		}
