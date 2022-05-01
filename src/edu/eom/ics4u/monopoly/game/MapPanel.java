@@ -2,6 +2,7 @@ package edu.eom.ics4u.monopoly.game;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -32,6 +33,7 @@ public class MapPanel extends JPanel{
     public static final Image GO_ENABLE_IMAGE = new ImageIcon(MapPanel.class.getResource("/Images/goGreen.png")).getImage();
     public static final Image GO_DISABLE_IMAGE = new ImageIcon(MapPanel.class.getResource("/Images/goGray.png")).getImage();
     public static final Image PROPERTIES_IMAGE = new ImageIcon(MapPanel.class.getResource("/Images/land.png")).getImage();
+    public static final Image TURN_IMAGE = new ImageIcon(MapPanel.class.getResource("/Images/point.png")).getImage();
     
     private static final int XROAD = GameGui.MAP_WIDTH/2 - ROAD_IMAGE.getWidth(null)/2;
     private static final int YROAD = 31;
@@ -140,6 +142,10 @@ public class MapPanel extends JPanel{
     	
     	// draw the selected property information
     	drawPropertyInfo(g, 5, 14);
+    	
+    	drawDate(g);
+    	drawOwnerLegend(g);
+    	drawTurn(g);
     }
     
     
@@ -263,6 +269,43 @@ public class MapPanel extends JPanel{
         }
         
         g.setColor(oldColor);
+	}
+	
+	public void drawDate(Graphics g) {
+		String date;
+		date = String.format("%s-%02d-%02d", "2099", roomModel.getMonth()+1, roomModel.getDate()+1);
+		
+        Color oldColor = g.getColor();        
+        g.setColor(new Color(255, 255, 255));
+	    g.setFont(new Font("Dialog", Font.PLAIN, 14));
+	    g.drawString(date,  GameGui.MAP_WIDTH-85, GameGui.MAP_HEIGHT-5);      
+        g.setColor(oldColor);
+	}
+	
+	public void drawOwnerLegend(Graphics g) {
+		String name;
+		int playerId;
+        
+        Color oldColor = g.getColor();
+        g.setColor(new Color(255, 255, 255));
+        g.setFont(new Font("Dialog", Font.PLAIN, 14));
+        FontMetrics fontMetrics = g.getFontMetrics();
+		
+        for (Player player: roomModel.players.values()) {
+			name = player.getName();
+			playerId = player.getPlayerId();
+			g.drawString(name, GameGui.MAP_WIDTH - fontMetrics.stringWidth(name)-27-25-2, playerId*25+21);
+			g.drawImage(player.getImageStar(), GameGui.MAP_WIDTH-27-25, playerId*25, null);
+			playerId ++;
+        }
+		
+		g.setColor(oldColor);
+	}
+	
+	public void drawTurn(Graphics g) {
+		if ((turnPlayer != null) && (roomModel.players.get(turnPlayer) != null)) {
+			g.drawImage(TURN_IMAGE, GameGui.MAP_WIDTH-25, roomModel.players.get(turnPlayer).getPlayerId()*25+3, null);			
+		}
 	}
 	
 	public void setTurn(String playerName) {

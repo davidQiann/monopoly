@@ -16,6 +16,7 @@ public class GameEventHandler extends Thread{
     public static final int BANK_ID = 9;
     //private Model model= Model.getInstance();
     private int gameId;
+    private boolean threadExit = false;
     
     public GameEventHandler(GameGui gameGui, int roomId, int gameId) {
     	this.gameId = gameId;
@@ -23,13 +24,14 @@ public class GameEventHandler extends Thread{
     	game = gameGui;
     	roomModel = Model.getInstance().rooms.get(roomId);
     	game.chartsTableModel.updChartsTable(roomId);
+    	threadExit = false;
     }
     
     public void run() {
     	System.out.println("Game Event handler thread is runing.");
     	Event event;
     	
-    	while (true) {
+    	while (!threadExit) {
     		event = roomModel.eventqueue.poll();
     		
     		if (event != null) {
@@ -74,7 +76,7 @@ public class GameEventHandler extends Thread{
     					quitGameHandler(event);
     					break;
     				case Event.EVENT_COMMUNITY:
-    					// TODO
+    					communityEventHandler(player, event);
     					break;    					
     				case Event.EVENT_LOANLAND:
     					// not used?
@@ -90,19 +92,21 @@ public class GameEventHandler extends Thread{
     					break;    					
     				case Event.EVENT_GOTOHOSPITAL:
     					// not used?
-    					break;
-    				
+    					break;    				
     			}
-    			
-    			// 
     		}
     		
    		 	try {
                 Thread.sleep(50);
-            } catch (InterruptedException ex) {
-                               
-            }
-       }
+            } catch (InterruptedException ex) {}
+    	}
+    	
+    	System.out.println("---quit thread--- before clear event queue, size = " + roomModel.eventqueue.size());
+    	try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {}    	
+    	while (roomModel.eventqueue.poll() != null) {}
+    	System.out.println("---quit thread--- after clear event queue, size = " + roomModel.eventqueue.size());    	
     }
     
     public void userGoHandler(Player player, Event event) {
@@ -224,7 +228,18 @@ public class GameEventHandler extends Thread{
     	
     	if ((event.getUsername() == game.myName) || (roomId == 0)) {
     		game.dispose();
+    		threadExit = true;
     	}
+    }
+    
+    public void communityEventHandler(Player player, Event event) {
+    	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Community event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), false);
+    	game.chartsTableModel.updChartsTable(roomId);
+    	
+    	if (event.getValue1() != -1) {
+    		player.jump();
+    	}    	
     }
     
     

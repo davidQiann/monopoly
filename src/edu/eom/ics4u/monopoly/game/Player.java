@@ -239,6 +239,13 @@ public class Player {
 		}
 	}
 	
+	public void jump () {
+		// set the destination coordinates 
+		xFoot = roomModel.properties[step].getXplayer();
+		yFoot = roomModel.properties[step].getYplayer();
+		edge  = roomModel.properties[step].getEdge();
+	}
+	
 	public void draw(Graphics g) {
 		g.drawImage(
 				images[edge], 
