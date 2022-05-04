@@ -1,5 +1,7 @@
 package edu.eom.ics4u.monopoly.game;
 
+import java.util.Random;
+
 import javax.swing.JOptionPane;
 
 import edu.eom.ics4u.monopoly.game.GameGui;
@@ -384,4 +386,18 @@ public class GameEventHandler extends Thread{
 		return input;
 	}
     
+	public int machineDecision (int cash, int price, int rent) {
+		int result;
+		int probability = 100 - 100 * price / cash;
+		Random rand = new Random();
+		int r = rand.nextInt(100);
+		if (price > cash) {
+			result = 1;
+		} else if (probability > r) {
+			result = 0;
+		} else {
+			result = 1;
+		}
+		return result;
+	}
 }
