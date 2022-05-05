@@ -116,6 +116,11 @@ public class GameEventHandler extends Thread{
     	
     	if (player.getIsMe() == true) {
     		game.mapPanel.setGoEnable(true);    		
+    	} else if (roomId == 0){
+    	    LogicResult result = roomModel.getRoomlogic().UserMove(player.getName(), roomId);
+    	    if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
+    	        roomModel.getRoomlogic().TurnDone(player.getName(), roomId);
+    	    }
     	}
     	game.mapPanel.setTurn(player.getName());
     }
@@ -141,9 +146,7 @@ public class GameEventHandler extends Thread{
 				
 				// if passing the bank, stop at the bank first and do the bank transfer
 				if (player.getIsMe() == true) {
-					//System.out.println("test is me");
 					if (((nextStep-nStep) < BANK_ID) && (nextStep > BANK_ID)) {
-						//System.out.println("test bank");
 						player.move(BANK_ID);
 						playerActions(player, BANK_ID);
 					}
@@ -151,7 +154,7 @@ public class GameEventHandler extends Thread{
 			    
 				// move the target location - nextSteps
 				player.move(nextStep);
-				if (player.getIsMe() == true) {
+				if ((player.getIsMe() == true) || (roomId == 0)) { // is me or machine
 					game.mapPanel.selectedPropertyId = nextStep;
 					playerActions(player, nextStep);					
 				}
@@ -228,7 +231,7 @@ public class GameEventHandler extends Thread{
     	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), false);
     	game.chartsTableModel.updChartsTable(roomId);
     	
-    	if ((event.getUsername() == game.myName) || (roomId == 0)) {
+    	if ((event.getUsername() == game.myName) || (roomId == 0) || (roomId == 1)) {
     		game.dispose();
     		threadExit = true;
     	}

@@ -27,15 +27,15 @@ public class GRoomTableModel extends AbstractTableModel {
                                     "Choose a Room"};    
 	private Object[][] data = new Object [NUM_ROOMS][columnNames.length];
 	
-	private static final int COL_ROOM_ID = 0;
-	private static final int COL_MODE    = 1;
-	private static final int COL_STATUS  = 2;
-	private static final int COL_PLAYER0 = 3;
-	private static final int COL_PLAYER1 = 4;
-	private static final int COL_PLAYER2 = 5;
-	private static final int COL_PLAYER3  = 6;
-	private static final int COL_NPLAYERS = 7;
-	private static final int COL_CHOOSE_ROOM = 8;
+	public static final int COL_ROOM_ID = 0;
+	public static final int COL_MODE    = 1;
+	public static final int COL_STATUS  = 2;
+	public static final int COL_PLAYER0 = 3;
+	public static final int COL_PLAYER1 = 4;
+	public static final int COL_PLAYER2 = 5;
+	public static final int COL_PLAYER3  = 6;
+	public static final int COL_NPLAYERS = 7;
+	public static final int COL_CHOOSE_ROOM = 8;
 	
 	private int roomId = 0; 
 	
@@ -51,7 +51,8 @@ public class GRoomTableModel extends AbstractTableModel {
 			data[i][COL_NPLAYERS] = Integer.valueOf(0);
 			data[i][COL_CHOOSE_ROOM] = Boolean.FALSE;
 		}
-		data[0][COL_MODE] = "Standalone";
+		data[0][COL_MODE] = "Man vs Mechine";
+		data[1][COL_MODE] = "Standalone";
 	}
 
     public int getColumnCount() {

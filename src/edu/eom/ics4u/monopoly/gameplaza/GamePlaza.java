@@ -150,7 +150,9 @@ public class GamePlaza extends JFrame implements ActionListener{
         gRoomTable = new JTable(gRoomTableModel);
         gRoomTable.getTableHeader().setFont(new Font("Dialog", Font.PLAIN, 14));
         gRoomTable.setRowHeight(24);
-        gRoomTable.getColumnModel().getColumn(gRoomTable.getColumnCount()-1).setMinWidth(100);
+        gRoomTable.getColumnModel().getColumn(GRoomTableModel.COL_MODE).setMinWidth(90);
+        gRoomTable.getColumnModel().getColumn(GRoomTableModel.COL_STATUS).setMinWidth(90);
+        gRoomTable.getColumnModel().getColumn(GRoomTableModel.COL_CHOOSE_ROOM).setMinWidth(110);
         gRoomTable.setFillsViewportHeight(true);        
         JScrollPane roomsScrollPane = new JScrollPane(gRoomTable);		
 		roomsScrollPane.setBounds(GROOM_TABLE_X, GROOM_TABLE_Y,GROOM_TABLE_WIDTH, GROOM_TABLE_HEIGHT);
