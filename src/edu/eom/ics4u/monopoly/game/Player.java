@@ -84,6 +84,10 @@ public class Player {
     	return step;
     }
     
+    public void setStep(int step) {
+    	this.step = step;
+    }
+    
     public boolean getIsMe() {
     	return isMe;
     }

@@ -211,7 +211,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
 			LogicResult logicResult;
 			int result = gameEventHandler.popOptionDialog("Are you sure to quit the game?");
 			if (result == 0) {
-				if (roomId == 0) {
+				if (roomId == 0 || roomId == 1) {
 					ArrayList <String> playerNames = new ArrayList<String> ();
 					for (Player player: roomModel.players.values()) {
 						playerNames.add(player.getName());

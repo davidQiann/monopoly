@@ -313,11 +313,17 @@ public class GameEventHandler extends Thread{
         
 		String str;
 		str = "The land on the " + location + " cost $" + price +", do you want to purchase?";
-		int input = popOptionDialog(str);		
+		int input = 1;
+		if (player.getIsMe() == true) {
+			input = popOptionDialog(str);
+		}else if (roomId == 0 && player.getIsMe() == false) { // machine
+			input = machineDecision(player.getCash(), price, property.getRent(0));
+		}
+		
 		if (input == 0) {
 			System.out.printf(">>> Game Id = %d, Game GUI call BuyLand API, name = %s, room id = %d, land id = %d.\n", gameId, player.getName(), roomId, propertyId);
 			LogicResult result = roomModel.getRoomlogic().BuyLand(player.getName(), roomId, propertyId);
-			if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
+			if (result.getResultcode() != LogicResult.RESULT_SUCCESS && player.getIsMe() == true) {
 				popConfirmDialog(result.getMessage());
 			}
         }
@@ -331,11 +337,17 @@ public class GameEventHandler extends Thread{
         
 		String str;
 		str = "Do you want to upgrade the building on the " + location + "? it will cost $" + price + ".";
-		int input = popOptionDialog(str);		
+		int input = 1;		
+		if (player.getIsMe() == true) {
+			input = popOptionDialog(str);
+		}else if (roomId == 0 && player.getIsMe() == false) { // machine
+			input = machineDecision(player.getCash(), price, property.getRent(0));
+		}
+		
 		if (input == 0) {
 			System.out.printf(">>> Game Id = %d, Game GUI call BuildHouse API, name = %s, room id = %d, land id = %d.\n", gameId, player.getName(), roomId, propertyId);
 			LogicResult result = roomModel.getRoomlogic().BuildHouse(player.getName(), roomId, propertyId);
-			if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
+			if (result.getResultcode() != LogicResult.RESULT_SUCCESS && player.getIsMe() == true) {
 				popConfirmDialog(result.getMessage());
 			}
         }
@@ -351,7 +363,7 @@ public class GameEventHandler extends Thread{
 		popConfirmDialog(str);		
 		System.out.printf(">>> Game Id = %d, Game GUI call PayRent API, name = %s, room id = %d, land id = %d.\n", gameId, player.getName(), roomId, propertyId);
 		LogicResult result = roomModel.getRoomlogic().PayRent(player.getName(), roomId, propertyId);
-		if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
+		if (result.getResultcode() != LogicResult.RESULT_SUCCESS && player.getIsMe() == true) {
 			popConfirmDialog(result.getMessage());
 		}
     }
