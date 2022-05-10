@@ -2,6 +2,8 @@ package edu.eom.ics4u.monopoly.game;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
@@ -11,6 +13,7 @@ import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,13 +21,14 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import edu.eom.ics4u.monopoly.gameplaza.PlazaEventHandler;
 import edu.eom.ics4u.monopoly.model.LogicResult;
 import edu.eom.ics4u.monopoly.model.Model;
 import edu.eom.ics4u.monopoly.model.RoomModel;
 
-public class GameGui extends JFrame implements WindowListener,MouseListener{
+public class GameGui extends JFrame implements WindowListener,MouseListener, ActionListener{
 	
 	public static final int MAP_X = 5;
     public static final int MAP_Y = 5;
@@ -120,6 +124,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
     	exportButton = new JButton("Export");
     	exportButton.setBounds(RIGHT_ZONE_WIDTH-90,MY_TRANS_HEIGHT-35,80,25);
     	transitionPanel.add(exportButton);
+    	exportButton.addActionListener(this);
     	
     	chartsTableModel = new ChartsTableModel();
     	chartsTable = new JTable(chartsTableModel);
@@ -209,7 +214,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
 		// TODO Auto-generated method stub
 		if (e.getWindow() == this) {
 			LogicResult logicResult;
-			int result = gameEventHandler.popOptionDialog("Are you sure to quit the game?");
+			int result = gameEventHandler.popOptionDialog("Are you sure to quit the game? Have you exported your personal transactions?");
 			if (result == 0) {
 				if (roomId == 0 || roomId == 1) {
 					ArrayList <String> playerNames = new ArrayList<String> ();
@@ -300,4 +305,27 @@ public class GameGui extends JFrame implements WindowListener,MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource() == exportButton) {
+			//System.out.println("Test click export button");
+			JFileChooser fileDialog = new JFileChooser();
+			fileDialog.setDialogTitle("Set transaction as:");
+			fileDialog.setFileFilter(new FileNameExtensionFilter("Excel Files (*.xls)", "xls"));
+			
+			int ret = fileDialog.showOpenDialog(null);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+            	String filename = fileDialog.getSelectedFile().getPath();
+            	if (!filename.endsWith(".xls")) {
+            		filename = filename + ".xls";
+            	}
+            	System.out.println("Test File name = " + filename);
+            	
+            	// TODO: save the transaction records to the excel file
+            }
+		}
+	}
+	
 }
