@@ -68,6 +68,8 @@ public class GameGui extends JFrame implements WindowListener,MouseListener, Act
     
     private static int gameId = 0;
     
+    TransactionRecord record;
+    
     public GameGui(int roomId, String myName){
     	gameId ++;
     	
@@ -144,6 +146,8 @@ public class GameGui extends JFrame implements WindowListener,MouseListener, Act
     	paintThread.start ();
     	
     	mapPanel.addMouseListener(this);
+    	
+    	record = new TransactionRecord(roomModel.players);
     	
     	gameEventHandler = new GameEventHandler(this, roomId, gameId);
     	Thread eventHandlerThread = new Thread(gameEventHandler);

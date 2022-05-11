@@ -323,7 +323,7 @@ public class Property {
 		}else if(level < 5){
 			value = PRICES[id][1]*level + PRICES[id][0];
 		}else {
-			value = PRICES[id][3] + PRICES[id][1]*4 + PRICES[id][0];
+			value = PRICES[id][2] + PRICES[id][1]*4 + PRICES[id][0];
 		}
 		return value;
 	}
