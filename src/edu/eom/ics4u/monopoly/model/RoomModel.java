@@ -149,7 +149,7 @@ public class RoomModel {
 
 
 	public String getUserTurn (String username) {
-		
+		int playerNum = 0;
 		setCount(getCount() + 1);
 		if (players.size()<2 || this.status!=STATUS_STARTED) {
 			System.out.println("Can not run the game");
@@ -166,23 +166,35 @@ public class RoomModel {
 			nextid = 0;
 		}
 
-
 		Iterator < Entry < String, Player >> iterator = players.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Entry < String, Player > entry = iterator.next();
-			Player p = entry.getValue();
-			if (p.getPlayerId() == nextid) {
-				if (p.isActive() == false) {
-					return getUserTurn(p.getName());
+		
+		
+		while (iterator.hasNext() == true) {
+	            Entry < String, Player > entry = iterator.next();
+				Player p = entry.getValue();
+				if (p.getPlayerId() == nextid) {
+					if (p.isActive() == false) {
+						return getUserTurn(p.getName());
+					}
+					if(p.getHospitalstatus()>0) {
+						playerNum++;
+						p.setHospitalstatus(p.getHospitalstatus()-1);
+						return getUserTurn(p.getName());
+						
+					}
+					if (p.getName().equals(username)) {
+						return null;
+					}
+					if(playerNum==players.size()) {
+						while (iterator.hasNext() == true) {
+							p.setHospitalstatus(0);
+						}
+					}
+					return p.getName();
 				}
-				if (p.getName().equals(username)) {
-					return null;
-				}
-				return p.getName();
-			}
 		}
 
-		
+	
 		return null;
 		
 	}

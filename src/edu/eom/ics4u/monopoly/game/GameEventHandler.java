@@ -116,10 +116,10 @@ public class GameEventHandler extends Thread{
     	
     	if (player.getIsMe() == true) {
     		game.mapPanel.setGoEnable(true);    		
-    	} else if (roomId == 0){
+    	} else if (roomId == 0){  // machine
     	    LogicResult result = roomModel.getRoomlogic().UserMove(player.getName(), roomId);
     	    if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
-    	        roomModel.getRoomlogic().TurnDone(player.getName(), roomId);
+    	        //roomModel.getRoomlogic().TurnDone(player.getName(), roomId);
     	    }
     	}
     	game.mapPanel.setTurn(player.getName());
@@ -174,36 +174,42 @@ public class GameEventHandler extends Thread{
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Buy Land event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
     	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
+    	game.record.writeRecord(player, event);
     }
     
     public void buildHouseHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Bulid House event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
     	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
+    	game.record.writeRecord(player, event);
     } 
     
     public void payRentHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Pay Rent event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
     	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
+    	game.record.writeRecord(player, event);
     }
     
     public void bankAdjustHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Bank Adjust event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
     	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
+    	game.record.writeRecord(player, event);
     }
     
     public void sellLandHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Sell Land event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
     	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
+    	game.record.writeRecord(player, event);
     }
     
     public void colletMoneyHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Collet Money event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
     	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
+    	game.record.writeRecord(player, event);
     }
     
     public void userWinHandler(Player player, Event event) {
@@ -241,6 +247,7 @@ public class GameEventHandler extends Thread{
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Community event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
     	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), false);
     	game.chartsTableModel.updChartsTable(roomId);
+    	game.record.writeRecord(player, event);
     	
     	if (event.getValue1() != -1) {
     		player.jump();

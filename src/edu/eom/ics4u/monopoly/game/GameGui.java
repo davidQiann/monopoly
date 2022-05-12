@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -285,6 +286,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener, Act
 					mapPanel.goDown();
 					mapPanel.setGoEnable(false);
 				}else {
+					gameEventHandler.popConfirmDialog(result.getMessage());
 					//TODO TurnDone() to switch to next player
 				}
 			}
@@ -326,8 +328,16 @@ public class GameGui extends JFrame implements WindowListener,MouseListener, Act
             		filename = filename + ".xls";
             	}
             	System.out.println("Test File name = " + filename);
-            	
-            	// TODO: save the transaction records to the excel file
+            	try {
+            		FileOutputStream fileOut = new FileOutputStream(filename);
+            		record.workbook.write(fileOut);
+            		fileOut.close();
+            		record.workbook.close();
+            		
+            	} catch (Exception e1) {
+            		String str = "The file " + filename + " has been opened in another program. Please close it and try again.";
+            		gameEventHandler.popConfirmDialog(str);
+            	}
             }
 		}
 	}

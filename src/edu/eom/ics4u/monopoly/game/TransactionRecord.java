@@ -15,7 +15,7 @@ public class TransactionRecord {
 	public TransactionRecord (HashMap<String, Player> players) {
 		workbook = new HSSFWorkbook();
 		for (Player player: players.values()) {
-			sheets [player.playerId] = workbook.createSheet(player.getName());
+			sheets[player.getPlayerId()] = workbook.createSheet(player.getName());
         	sheets[player.getPlayerId()].setColumnWidth(0, 12*256);
         	sheets[player.getPlayerId()].setColumnWidth(1, 12*256);
         	sheets[player.getPlayerId()].setColumnWidth(2, 12*256);        	
