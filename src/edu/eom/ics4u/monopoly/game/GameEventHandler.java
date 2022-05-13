@@ -16,6 +16,7 @@ public class GameEventHandler extends Thread{
     private int roomId;
     public RoomModel roomModel;
     public static final int BANK_ID = 9;
+    public static final int PARK_ID = 19;
     //private Model model= Model.getInstance();
     private int gameId;
     private boolean threadExit = false;
@@ -127,9 +128,7 @@ public class GameEventHandler extends Thread{
     
     public void userMoveHandler(Player player, Event event) {
     	System.out.printf("<<< Game Id = %d, Game GUI receives a User Move event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
-    	
 		Thread t = new Thread(new Runnable(){
-
 			@Override
 			public void run() {
 				String playerName = event.getUsername();
@@ -151,23 +150,36 @@ public class GameEventHandler extends Thread{
 						playerActions(player, BANK_ID);
 					}
 				}
+				
+				// if passing the park, stop at the park first and do the communityReq
+				boolean jump = false;
+				if (player.getIsMe() == true || roomId == 0) { // is me or machine
+					if (((nextStep-nStep) < PARK_ID) && (nextStep > PARK_ID)) {
+						player.move(PARK_ID);
+						jump = communityReq(player);
+					}
+				}
 			    
 				// move the target location - nextSteps
-				player.move(nextStep);
-				if ((player.getIsMe() == true) || (roomId == 0)) { // is me or machine
-					game.mapPanel.selectedPropertyId = nextStep;
-					playerActions(player, nextStep);					
+				if (jump == false) {
+					player.move(nextStep);
 				}
 				
-				LogicResult result = roomModel.getRoomlogic().TurnDone(playerName, roomId); 
-				if (result.getResultcode() != LogicResult.RESULT_SUCCESS) {
-					popConfirmDialog(result.getMessage());
+				if ((player.getIsMe() == true) || (roomId == 0)) { // is me or machine
+					if (jump == false) {
+						game.mapPanel.selectedPropertyId = nextStep;
+						playerActions(player, nextStep);
+					}
+					
+					LogicResult result = roomModel.getRoomlogic().TurnDone(playerName, roomId); 
+					if (result.getResultcode() != LogicResult.RESULT_SUCCESS && player.getIsMe() == true) {
+						popConfirmDialog(result.getMessage());
+					}					
 				}
 			}
 			
 		});
-		t.start();
-		
+		t.start();		
     }
     
     public void buyLandHandler(Player player, Event event) {
@@ -375,6 +387,20 @@ public class GameEventHandler extends Thread{
 		}
     }
     
+    public boolean communityReq(Player player) {
+    	System.out.printf(">>> Game Id = %d, Game GUI call community API, name = %s, room id = %d.\n", gameId, player.getName(), roomId);
+		
+    	boolean jump = false;
+		LogicResult result = roomModel.getRoomlogic().Community(player.getName(), roomId, PARK_ID);
+		if (player.getIsMe() == true) {
+			popConfirmDialog(result.getMessage());
+		}
+		
+		if (result.getValue1() ==1) {
+			jump = true;
+		}
+        return jump;
+    }
     
     
     // Pop up a confirm dialog to tell the player something. 
