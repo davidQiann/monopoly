@@ -2,6 +2,7 @@ package edu.eom.ics4u.monopoly.game;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
@@ -362,4 +363,18 @@ public class Property {
 		}
 	}
 	
+	public boolean isClicked(int x, int y) {
+		boolean result = false;
+		if (image != null ) {
+			Rectangle area = new Rectangle(xProperty,yProperty,image.getWidth(null), image.getHeight(null));
+			
+			if (area.contains(x,y)) {
+				result = true;
+			}
+			else {
+				result = false;
+			}
+		}
+		return result;
+	}
 }

@@ -360,7 +360,7 @@ public class GameEventHandler extends Thread{
 		if (player.getIsMe() == true) {
 			input = popOptionDialog(str);
 		}else if (roomId == 0 && player.getIsMe() == false) { // machine
-			input = machineDecision(player.getCash(), price, property.getRent(0));
+			input = machineDecision(player.getCash(), price, property.getRent(1));
 		}
 		
 		if (input == 0) {
