@@ -154,7 +154,7 @@ public class GameEventHandler extends Thread{
 				// if passing the park, stop at the park first and do the communityReq
 				boolean jump = false;
 				if (player.getIsMe() == true || roomId == 0) { // is me or machine
-					if (((nextStep-nStep) < PARK_ID) && (nextStep > PARK_ID)) {
+					if (((nextStep-nStep) < PARK_ID) && (nextStep >= PARK_ID)) {
 						player.move(PARK_ID);
 						jump = communityReq(player);
 					}
