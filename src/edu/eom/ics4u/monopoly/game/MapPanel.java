@@ -51,7 +51,7 @@ public class MapPanel extends JPanel{
     private int imageCnt = 9;
     
     public static final int NUM_PROPERTY = 40;
-    private Property properties [] = new Property[NUM_PROPERTY]; // 0 - 39
+    public Property properties [] = new Property[NUM_PROPERTY]; // 0 - 39
 
    // DL = Down Left, UL = Up Left, UR = Up Right, DR = Down Right
     public static final int EDGE_DL = 0, EDGE_UL = 1, EDGE_UR = 2, EDGE_DR = 3; 

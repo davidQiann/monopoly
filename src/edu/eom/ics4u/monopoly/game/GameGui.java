@@ -272,10 +272,19 @@ public class GameGui extends JFrame implements WindowListener,MouseListener, Act
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		int x = e.getX();
+		int y = e.getY();
+		if (e.getSource() == mapPanel) {
+			boolean done = false;
+			for (int i = 0; i < mapPanel.properties.length; i++) {
+				if (mapPanel.properties[i].isClicked(x, y) == true && done == false) {
+					done = true;
+					mapPanel.selectedPropertyId = i;
+				}
+			}
+		}
 	}
-
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
