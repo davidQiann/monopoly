@@ -166,8 +166,8 @@ public class GameLogic implements LogicInterface {
 			player.setHospitalstatus(3);   // stay in hospital for 3 days
 			return result;
 		}
-		
-		if ( (roommodel.getDate()==0 && roommodel.getMonth()!=0 ) && (player.getStep() <9) && (nextstep >=9) ) {
+		//add one for community
+		if ( (roommodel.getDate()==0 && roommodel.getMonth()!=0 ) ) {
 			// bypass bank on first day of each month
 			// collect interest
 			int saving = player.getSaving();

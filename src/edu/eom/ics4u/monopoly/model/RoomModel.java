@@ -150,6 +150,7 @@ public class RoomModel {
 
 	public String getUserTurn (String username) {
 		int playerNum = 0;
+		int activeNum =0;
 		setCount(getCount() + 1);
 		if (players.size()<2 || this.status!=STATUS_STARTED) {
 			System.out.println("Can not run the game");
@@ -165,39 +166,53 @@ public class RoomModel {
 		if (nextid >= players.size()) {
 			nextid = 0;
 		}
+		// loop through all player, calculate the number of active player in game
+				Iterator < Entry < String, Player >> iterator = players.entrySet().iterator();
 
-		Iterator < Entry < String, Player >> iterator = players.entrySet().iterator();
-		
-		
-		while (iterator.hasNext() == true) {
-	            Entry < String, Player > entry = iterator.next();
-				Player p = entry.getValue();
-				if (p.getPlayerId() == nextid) {
-					if (p.isActive() == false) {
-						return getUserTurn(p.getName());
+				
+					for (Player pl : players.values()) {
+						if(pl.isActive()==true) {
+							activeNum++;
 					}
-					if(p.getHospitalstatus()>0) {
-						playerNum++;
-						p.setHospitalstatus(p.getHospitalstatus()-1);
-						return getUserTurn(p.getName());
-						
-					}
-					if (p.getName().equals(username)) {
+					
+				}
+					if (activeNum <= 1) {
 						return null;
 					}
-					if(playerNum==players.size()) {
-						while (iterator.hasNext() == true) {
-							p.setHospitalstatus(0);
-						}
-					}
-					return p.getName();
-				}
-		}
+					iterator = players.entrySet().iterator();
 
-	
-		return null;
-		
-	}
+					while (iterator.hasNext() == true) {
+			            Entry < String, Player > entry = iterator.next();
+						Player p = entry.getValue();
+						if (p.getPlayerId() == nextid) {
+							if (p.isActive() == false) {
+								return getUserTurn(p.getName());
+							}
+							if(p.getHospitalstatus()>0) {
+								playerNum++;
+								p.setHospitalstatus(p.getHospitalstatus()-1);
+								return getUserTurn(p.getName());
+							}
+							if (p.getName().equals(username)) {
+								return null;
+							}
+							if(playerNum==players.size()) {
+								while (iterator.hasNext() == true) {
+									p.setHospitalstatus(0);
+								}
+							}
+							if(activeNum==0) {
+								while (iterator.hasNext() == true) {
+									p.setActive(false);
+								}
+							}
+							return p.getName();
+						    
+						}
+				}
+					return null;
+				}
+
 
 	/**
 	 * @return the status
