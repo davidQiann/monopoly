@@ -108,6 +108,92 @@ class TestUserTurn {
 		assertEquals(null,nextuser);//check if active player can move if only one active player left
 	}
 	
+	
+	
+	@Test
+	final void testUserMove() {
+		Model m =  Model.getInstance();
+		
+		RoomModel rm = m.rooms.get(0);
+		Player p1 = new Player(0, "david", 0, 0, true);
+		
+		rm.players.put("david", p1);
+		rm.setStatus(rm.STATUS_STARTED);
+		p1.setActive(true);
+		p1.setHospitalstatus(0);
+		p1.setCash(100);
+		p1.setSaving(1000);
+		p1.setLoan(900);
+		Property property1=rm.properties[0];
+		Property property2=rm.properties[2];
+		String name1=p1.getName();
+		name1=property1.getOwnerName();
+		p1.setStep(0);
+		rm.setDate(18);
+		rm.setMonth(2);
+		
+		LogicResult result1 = new LogicResult(LogicResult.RESULT_SUCCESS, "");
+		LogicResult result2 = new LogicResult(LogicResult.RESULT_FAIL, "the user not join yet, can not throw dice");
+		LogicResult result3 = new LogicResult(LogicResult.RESULT_FAIL, "Game not started, can not throw dice");
+		LogicResult result4 = new LogicResult(LogicResult.RESULT_FAIL, "only one player left on the game");
+		LogicResult result5 = new LogicResult(LogicResult.RESULT_FAIL, "User " + p1.getName() + " in hospital, can not throw dice");
+		LogicResult result6 = new LogicResult(LogicResult.RESULT_FAIL, "Not enough player in game, player can't move");
+		LogicResult result7 = new LogicResult(LogicResult.RESULT_FAIL, "User is not active, user can't move");
+		GameLogic gl = new GameLogic();
+
+		rm.setStatus(rm.STATUS_PENDING);
+		LogicResult result = gl.UserMove("david", rm.getRoomid());
+		assertEquals(result3,result);//check if player can move when room is not started *shouldn't be problem if it is catched in startgame method
+		
+		rm.setStatus(rm.STATUS_STARTED);
+		Player p2 = new Player(0, "sirui", 1, 1, true);
+		p2.setActive(true);
+		p2.setHospitalstatus(0);
+		p2.setCash(100);
+		p2.setSaving(1000);
+		p2.setLoan(0);
+		String name2=p2.getName();
+		name2=property2.getOwnerName();
+		//rm.players.put("sirui", p2);
+		
+		Player p3 = new Player(0, "darren", 1, 2, true);
+		p2.setActive(true);
+		p2.setHospitalstatus(0);
+		p2.setCash(100);
+		p2.setSaving(1000);
+		p2.setLoan(0);
+		result = gl.UserMove("david", rm.getRoomid());
+		assertEquals(result6,result);//check if player can move when <2player in game *shouldn't be problem if it is catched in startgame method
+		
+		rm.players.put("sirui", p2);
+		rm.players.put("darren", p3);
+		p1.setActive(false);
+		result = gl.UserMove("david", rm.getRoomid());
+		assertEquals(result7,result); //check if player can move when player is not active 
+		
+		p1.setActive(true);
+		p1.setHospitalstatus(2);
+		result = gl.UserMove("david", rm.getRoomid());
+		assertEquals(result5,result);//check if player can move when player is in hospital
+		
+		p2.setActive(false);
+		p3.setActive(false);
+		result = gl.UserMove("david", rm.getRoomid());
+		assertEquals(result4,result);//check if player can move when one active player left in game
+		
+		
+		//check if player can move when one active player left in game
+		//check if bypass bank
+		//check if player bypass startpoint and collect 200
+		//check if player bypass community and recieve community events
+		//check if player step on hospital and is set to stay in hospital
+		//check if date increase properly normally
+		//check if date increases into month when last day of month
+		//check if player collect interest properly on the first day of month(excepet first month)
+		//check if player collect interets on first day of first month
+		//check if player can buy land in an empty land
+		//check if player has correct step and nextstep value
+	}
 	@Test
 	final void testUserMove1() {
 		Model m =  Model.getInstance();
