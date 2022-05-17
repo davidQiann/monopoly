@@ -41,7 +41,7 @@ class TestUserTurn {
 	 * Test method for {@link edu.eom.ics4u.monopoly.model.RoomModel#getUserTurn(java.lang.String)}.
 	 */
 	@Test
-	final void testGetUserTurn() {
+	final void testGetUserTurn() {//test if winner still move after game ends
 		RoomModel rm =new RoomModel(0);
 		Player p1 = new Player(0, "david", 0, 0, true);
 		Player p2 = new Player(0, "oliver", 1, 1, true);
@@ -59,6 +59,53 @@ class TestUserTurn {
 		nextuser = rm.getUserTurn("oliver");
 		assertEquals("david",nextuser);
 	//	fail("Not yet implemented"); // TODO
+	}
+	
+	@Test
+	final void testGetUserTurn1() {
+		RoomModel rm =new RoomModel(0);
+		Player p1 = new Player(0, "david", 0, 0, true);
+		
+		rm.players.put("david", p1);
+		rm.setStatus(rm.STATUS_STARTED);
+		p1.setActive(true);
+		p1.setHospitalstatus(0);
+		String nextuser = rm.getUserTurn("david");
+		System.out.printf("next user is " +nextuser);
+		assertEquals(null,nextuser);// check if player can get turn if <2 player room
+		
+		Player p2 = new Player(0, "sirui", 1, 1, true);
+		rm.players.put("sirui", p2);
+		p2.setActive(true);
+		p2.setHospitalstatus(0);
+		rm.setStatus(rm.STATUS_PENDING);
+		nextuser = rm.getUserTurn("sirui");
+		assertEquals(null,nextuser);// check if player can get turn when room isn't started
+		Player p3 = new Player(0,"darren",0,2,true);
+		rm.setStatus(rm.STATUS_STARTED);
+		p3.setActive(true);
+		p3.setHospitalstatus(0);
+		nextuser = rm.getUserTurn("darren");
+		assertEquals(null,nextuser);//check if player can get turn when player not in room
+		rm.players.put("darren", p3);
+		p1.setActive(false);
+		nextuser = rm.getUserTurn("david");
+		assertEquals("sirui",nextuser);//check if player can get turn when not active
+		nextuser = rm.getUserTurn("darren");
+		assertEquals("sirui",nextuser);//check if nonactive player get skip when inround
+		p1.setActive(true);
+		p1.setHospitalstatus(3);
+		nextuser = rm.getUserTurn("david");
+		assertEquals("sirui",nextuser);//check if hospital player can move
+		nextuser = rm.getUserTurn("darren");
+		assertEquals("sirui",nextuser);// check if hospital player get skip
+		p2.setHospitalstatus(3);
+		nextuser = rm.getUserTurn("david");
+		assertEquals("darren",nextuser);//test if player will be nonhospital player when more than 1 player is in hospital
+		p1.setActive(false);
+		p2.setActive(false);
+		nextuser = rm.getUserTurn("darren");
+		assertEquals(null,nextuser);//check if active player can move if only one active player left
 	}
 	
 	@Test

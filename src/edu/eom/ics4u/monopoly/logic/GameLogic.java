@@ -172,7 +172,7 @@ public class GameLogic implements LogicInterface {
 			// collect interest
 			int saving = player.getSaving();
 			int loan = player.getLoan();
-			int interest = (int)(0.1 * saving) + (int)(0.2*loan);
+			int interest = (int)(0.1 * saving) - (int)(0.2*loan);
 			System.out.println("distribute interest for " + player.getName() + " value " + interest);
 			PlayerPay(roommodel, player, 0-interest);
 			Event event1 = new Event(Event.EVENT_COLLECTMONEY, roomid,player.getName(), player.getStep(), player.getName() + "Monthend distribute interest $" + saving +"for " +player.getName(),0-interest,0,0,0,0);
