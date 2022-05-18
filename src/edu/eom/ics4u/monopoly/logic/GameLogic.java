@@ -129,6 +129,11 @@ public class GameLogic implements LogicInterface {
 			result.setMessage("only one player left on the game");
 			return result;	
 		}
+		if(roommodel.players.get(username).isActive() == false) {
+			result.setResultcode(LogicResult.RESULT_FAIL);
+			result.setMessage( "User is not active, user can't move");
+			return result;	
+		}
 		System.out.println("user " + username + " move " + result);
 		Player player = roommodel.players.get(username);
 
