@@ -46,7 +46,7 @@ public class GameLogic implements LogicInterface {
 		if ((roommodel.getStatus() != RoomModel.STATUS_STARTED) && (roommodel.players.size()<4)) {
 			if (roommodel.players.get(username)!= null) {
 				result.setResultcode(LogicResult.RESULT_FAIL);
-				result.setMessage( "User " + username + " Join Room " + roomid + "Failed, User already joined, can not join again");
+				result.setMessage( "User " + username + " Join Room " + roomid + " Failed, User already joined, can not join again");
 				return result;
 			}
 			Player player = new Player(roomid,username,characterId, ownerid,  true);

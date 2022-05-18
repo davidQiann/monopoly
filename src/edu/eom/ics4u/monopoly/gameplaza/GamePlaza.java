@@ -49,7 +49,7 @@ public class GamePlaza extends JFrame implements ActionListener{
 	private JLabel normalModeLabel;
 	private JLabel roundModeLabel;
 	private JButton joinVisitor,joinPlayer,startGameButton;
-	private JLabel infoLabel;
+	public JLabel infoLabel;
 	
 	public String name;
 	private int characterId;
@@ -232,9 +232,9 @@ public class GamePlaza extends JFrame implements ActionListener{
 			return;
 		}
 		
-		System.out.printf("Name = %s, characterId = %d\n", name, characterId);
-		infoLabel.setForeground(Color.black);
-		infoLabel.setText("Join a game room ...");
+		//System.out.printf("Name = %s, characterId = %d\n", name, characterId);
+		//infoLabel.setForeground(Color.black);
+		//infoLabel.setText("Join a game room ...");
 	}
 	
 	public void joinVisitorAction() {
@@ -266,7 +266,8 @@ public class GamePlaza extends JFrame implements ActionListener{
 			infoLabel.setForeground(Color.red);
 			infoLabel.setText("You need join the room first before starting the game.");
 			return;
-		} else if (gRoomTableModel.getRoomStatus(roomId) != "Waiting to start") {
+		} else if (gRoomTableModel.getRoomStatus(roomId) != "Waiting to start" && 
+				   gRoomTableModel.getRoomStatus(roomId) != "Full") {
 			infoLabel.setForeground(Color.red);
 			infoLabel.setText("The selected room is invalid to be started, please select another valid room.");
 			return;
@@ -292,9 +293,9 @@ public class GamePlaza extends JFrame implements ActionListener{
 		}
 		
 		
-		System.out.printf("game mode = %d\n", gameMode);
-		infoLabel.setForeground(Color.black);
-		infoLabel.setText("Start the game ...");
+		//System.out.printf("game mode = %d\n", gameMode);
+		//infoLabel.setForeground(Color.black);
+		//infoLabel.setText("Start the game ...");
 	}
 	
 }

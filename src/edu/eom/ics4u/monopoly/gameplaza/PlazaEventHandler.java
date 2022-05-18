@@ -1,6 +1,9 @@
 package edu.eom.ics4u.monopoly.gameplaza;
 
 import edu.eom.ics4u.monopoly.model.Model;
+
+import java.awt.Color;
+
 import edu.eom.ics4u.monopoly.game.GameGui;
 import edu.eom.ics4u.monopoly.model.Event;
 
@@ -51,6 +54,8 @@ public class PlazaEventHandler extends Thread{
     	int roomId = event.getRoomid();
     	String playerName = event.getUsername();
     	plaza.gRoomTableModel.updRoom(roomId); 
+    	plaza.infoLabel.setForeground(Color.BLACK);
+    	plaza.infoLabel.setText(playerName + " " + event.getEventinfo());
     	
     	if ((roomId == plaza.roomId) && (playerName == plaza.name)) {
     		plaza.isJoinRoom = true;
@@ -61,6 +66,8 @@ public class PlazaEventHandler extends Thread{
     	int roomId = event.getRoomid();
     	String playerName = event.getUsername();
     	plaza.gRoomTableModel.updRoom(roomId); 
+    	plaza.infoLabel.setForeground(Color.BLACK);
+    	plaza.infoLabel.setText(playerName + " " + event.getEventinfo());
     	
     	if (roomId == plaza.roomId) {
     		GameGui game = new GameGui(roomId,playerName);
@@ -72,6 +79,8 @@ public class PlazaEventHandler extends Thread{
     	int roomId = event.getRoomid();
     	String playerName = event.getUsername();
     	plaza.gRoomTableModel.updRoom(roomId); 
+    	plaza.infoLabel.setForeground(Color.BLACK);
+    	plaza.infoLabel.setText(playerName + " " + event.getEventinfo());
     	
     	if ((roomId == plaza.roomId) && (playerName == plaza.name)) {
     		plaza.isJoinRoom = false;
