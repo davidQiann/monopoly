@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+
+
 import edu.eom.ics4u.monopoly.game.Player;
 import edu.eom.ics4u.monopoly.game.Property;
 import edu.eom.ics4u.monopoly.logic.GameLogic;
@@ -204,12 +206,133 @@ class TestUserTurn {
 		p2.setActive(true);
 		p3.setActive(true);
 		p1.setStep(20);
+		int step=p1.getStep();
 		result = gl.UserMove("david", rm.getRoomid());
+		int nextstep=p1.getStep();
+		int checkstep=step+result.getValue1()+result.getValue2();
+		assertEquals(nextstep,checkstep);//check if player's step is changed after moving
 		Event[] events = new Event[rm.eventqueue.size()];
 		events=rm.eventqueue.toArray(events);
 		for (int i=0; i< events.length;i++) {
-			System.out.println("EVENT:"+ events[i].getEventinfo());
+			System.out.println("EVENT:"+ events[i].getEventinfo());//check if method generate UserMove events and put it into event queue when user move
+			rm.eventqueue.remove();
 		}
+		
+		System.out.println("BELOW IS BYPASS BANK TEST");
+		p1.setStep(8);
+		result = gl.UserMove("david", rm.getRoomid());
+		events=rm.eventqueue.toArray(events);
+		for (int i=0; i< events.length;i++) {
+			System.out.println("EVENT:"+ events[i].getEventinfo());//check if ByPass Bank event is generated when player passes the bank
+			rm.eventqueue.remove();
+		}
+		
+		System.out.println("BELOW IS BYPASS STARTING POINT TEST");
+		p1.setStep(39);
+		p1.setCash(0);
+		result = gl.UserMove("david", rm.getRoomid());
+		assertEquals(p1.getCash(),200);//check if player's money got updated(+200)
+		for (int i=0; i< events.length;i++) {
+			System.out.println("EVENT:"+ events[i].getEventinfo());//check if COLLECTMONEY event is generated when player passes the starting point
+			rm.eventqueue.remove();
+		}
+		
+		System.out.println("BELOW IS BYPASS Community TEST");
+		p1.setStep(18);
+		p1.setCash(100);
+		result = gl.UserMove("david", rm.getRoomid());
+		for (int i=0; i< events.length;i++) {
+			System.out.println("EVENT:"+ events[i].getEventinfo());//check if COMMUNITY event is generated when player passes the park
+			rm.eventqueue.remove();
+		}
+		
+		System.out.println("BELOW IS POSITION HOSPITAL TEST");
+		p1.setStep(25);
+		p1.setCash(100);
+		result = gl.UserMove("david", rm.getRoomid());
+		p1.getHospitalstatus();
+		for (int i=0; i< events.length;i++) {
+			System.out.println("EVENT:"+ events[i].getEventinfo());//check if HOSPITAL event is generated when player land at hospital
+			rm.eventqueue.remove();
+		}
+		
+		System.out.println("BELOW IS NORMAL DATE TEST");
+		rm.setDate(18);
+		rm.setMonth(2);
+		p1.setStep(20);
+		p1.setHospitalstatus(0);
+		result = gl.UserMove("david", rm.getRoomid());
+		result = gl.UserMove("sirui", rm.getRoomid());
+		result = gl.UserMove("darren", rm.getRoomid());//check if date increase properly normally after one round
+		assertEquals(rm.getDate(),19);
+		assertEquals(rm.getMonth(),2);
+		for (int i=0; i< events.length;i++) {
+			System.out.println("EVENT:"+ events[i].getEventinfo());//check if all players event is generated during one round
+			rm.eventqueue.remove();
+		}
+		
+		
+		System.out.println("BELOW IS INTEREST TEST");
+		rm.setDate(27);
+		rm.setMonth(2);
+		p1.setStep(20);
+		p1.setHospitalstatus(0);
+		p1.setCash(0);
+		p1.setSaving(100);
+		p1.setLoan(0);
+		result = gl.UserMove("david", rm.getRoomid());
+		result = gl.UserMove("sirui", rm.getRoomid());
+		result = gl.UserMove("darren", rm.getRoomid());//check if date increase properly normally after one round
+		assertEquals(rm.getDate(),0);
+		assertEquals(rm.getMonth(),3);
+		for (int i=0; i< events.length;i++) {
+			System.out.println("EVENT:"+ events[i].getEventinfo());//check if INTEREST event is generated on first day of month
+			rm.eventqueue.remove();
+		}
+		
+		System.out.println("BELOW IS INTEREST TEST 1");
+		rm.setDate(27);
+		rm.setMonth(2);
+		p1.setStep(20);
+		p1.setHospitalstatus(0);
+		p1.setCash(0);
+		p1.setSaving(100);
+		p1.setLoan(0);
+		result = gl.UserMove("david", rm.getRoomid());
+		result = gl.UserMove("sirui", rm.getRoomid());
+		result = gl.UserMove("darren", rm.getRoomid());//check if date increase properly normally after one round
+		
+		p1.getCash();
+		assertEquals(rm.getDate(),0);
+		assertEquals(rm.getMonth(),3);
+		for (int i=0; i< events.length;i++) {
+			System.out.println("EVENT:"+ events[i].getEventinfo());//check if INTEREST event is generated on first day of month
+			rm.eventqueue.remove();
+		}
+		
+		
+		System.out.println("BELOW IS INTEREST TEST 2");
+		rm.setDate(0);
+		rm.setMonth(1);
+		p1.setStep(20);
+		p1.setHospitalstatus(0);
+		p1.setCash(0);
+		p1.setSaving(100);
+		p1.setLoan(0);
+		result = gl.UserMove("david", rm.getRoomid());
+		result = gl.UserMove("sirui", rm.getRoomid());
+		result = gl.UserMove("darren", rm.getRoomid());//check if date increase properly normally after one round
+		
+		p1.getCash();//check if player's cash will change on first day on first month
+		assertEquals(rm.getDate(),0);
+		assertEquals(rm.getMonth(),3);
+		for (int i=0; i< events.length;i++) {
+			System.out.println("EVENT:"+ events[i].getEventinfo());//check if INTEREST event is generated on first day of month
+			rm.eventqueue.remove();
+		}
+		
+		
+		
 		
 //		Event event = new Event(Event.EVENT_USERMOVE, rm.getRoomid(),p1.getName(), p1.getStep(), p1.getName() + " throw dice " + dice1 + "," + dice2  ,dice1, dice2,0,0,0);
 		
@@ -221,8 +344,6 @@ class TestUserTurn {
 		//check if date increases into month when last day of month
 		//check if player collect interest properly on the first day of month(excepet first month)
 		//check if player collect interets on first day of first month
-		//check if player can buy land in an empty land
-		//check if player has correct step and nextstep value
 	}
 	@Test
 	final void testUserMove1() {
