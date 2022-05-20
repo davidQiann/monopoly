@@ -143,7 +143,7 @@ class TestUserTurn {
 		GameLogic gl = new GameLogic();
 
 		rm.setStatus(rm.STATUS_PENDING);
-		LogicResult result = gl.UserMove("david", rm.getRoomid());//check if player can move when room is not started *shouldn't be problem if it is catched in startgame method
+		LogicResult result = gl.UserMove("david", rm.getRoomid());//check if player can move when room is not started 
 		assertEquals(result3.getValue1(),result.getValue1());
 		assertEquals(result3.getValue2(),result.getValue2());
 		assertEquals(result3.getMessage(),result.getMessage());
@@ -169,8 +169,8 @@ class TestUserTurn {
 		p3.setSaving(1000);
 		p3.setLoan(0);
 		p3.setStep(1);
-		result = gl.UserMove("david", rm.getRoomid());//check if player can move when <2player in game *shouldn't be problem if it is catched in startgame method
-//		assertEquals(result4.getValue1(),result.getValue1());//no need to check dice
+		result = gl.UserMove("david", rm.getRoomid());//check if player can move when <2player in game
+//		assertEquals(result4.getValue1(),result.getValue1());//no need to check dice, dice work as intended
 //		assertEquals(result4.getValue2(),result.getValue2());
 		assertEquals(result4.getMessage(),result.getMessage());
 		assertEquals(result4.getResultcode(),result.getResultcode());
