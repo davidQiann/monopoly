@@ -19,10 +19,10 @@ public class Model {
 
     private Queue<Event> eventqueue = new ArrayDeque<Event>();
      
-    public Model(){
+    public Model(){//add
         for (int i=0; i<NUM_ROOMS; i++) {
             RoomModel roommodel = new RoomModel(i);
-            if (i==0) {
+            if (i==0 || i==1) {
                 roommodel.setRoomlogic(GameLogic.getInstance());
             }else{
                 roommodel.setRoomlogic(RemoteLogic.getInstance());

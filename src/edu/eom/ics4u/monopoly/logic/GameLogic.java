@@ -40,7 +40,10 @@ public class GameLogic implements LogicInterface {
 	@Override
 	public LogicResult UserJoin(int roomid, String username, int characterId) {
 		Model model = Model.getInstance();
-		RoomModel roommodel= model.rooms.get(roomid);
+		RoomModel roommodel= model.rooms.get(roomid);//add man machine
+		if(roomid==0 && !(username.equals("machine"))){
+			UserJoin(roomid, "machine",2);
+		}
 		int ownerid = roommodel.players.size();
 		LogicResult result = new LogicResult(LogicResult.RESULT_SUCCESS, "");
 		if ((roommodel.getStatus() != RoomModel.STATUS_STARTED) && (roommodel.players.size()<4)) {
@@ -172,6 +175,11 @@ public class GameLogic implements LogicInterface {
 			return result;
 		}
 		//add one for community
+		if(steps< 19 && nextstep>=19) {
+			System.out.println("Bypass community");
+			Event event1 = new Event(Event.EVENT_COMMUNITY , roomid,player.getName(), player.getStep(), player.getName() + "pass park",0,0 ,0,0,0);
+			roommodel.eventqueue.add(event1);
+		}
 		if ( (roommodel.getDate()==0 && roommodel.getMonth()!=0 ) ) {
 			// bypass bank on first day of each month
 			// collect interest
