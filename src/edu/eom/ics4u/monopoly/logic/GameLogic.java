@@ -52,8 +52,14 @@ public class GameLogic implements LogicInterface {
 				result.setMessage( "User " + username + " Join Room " + roomid + " Failed, User already joined, can not join again");
 				return result;
 			}
+			if (username.equals("machine")) {
+				Player player = new Player(roomid,username,characterId, ownerid,  false);
+				roommodel.players.put(username,player);
+			}
+			else {
 			Player player = new Player(roomid,username,characterId, ownerid,  true);
 			roommodel.players.put(username,player);
+			}
 			roommodel.setStatus(RoomModel.STATUS_PENDING); // added by CYY
 			int roomstatus = roommodel.getStatus();
 
