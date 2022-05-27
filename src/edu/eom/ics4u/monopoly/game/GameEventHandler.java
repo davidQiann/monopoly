@@ -184,49 +184,49 @@ public class GameEventHandler extends Thread{
     
     public void buyLandHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Buy Land event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
-    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " "  +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
     	game.record.writeRecord(player, event);
     }
     
     public void buildHouseHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Bulid House event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
-    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " "  +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
     	game.record.writeRecord(player, event);
     } 
     
     public void payRentHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Pay Rent event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
-    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " " + event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
     	game.record.writeRecord(player, event);
     }
     
     public void bankAdjustHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Bank Adjust event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
-    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " " +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
     	game.record.writeRecord(player, event);
     }
     
     public void sellLandHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Sell Land event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
-    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " "  +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
     	game.record.writeRecord(player, event);
     }
     
     public void colletMoneyHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Collet Money event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
-    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " "  +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
     	game.record.writeRecord(player, event);
     }
     
     public void userWinHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a User Win event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
-    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " " +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
     	if (player.getIsMe() == true) {
     		String win = player.getName() + " wins . Please export your personal transaction through clicking the Export button.";
@@ -236,7 +236,7 @@ public class GameEventHandler extends Thread{
     
     public void userBankruptcyHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a User Bankruptcy event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
-    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), player.getIsMe());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " "  +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
     	if (player.getIsMe() == true) {
     		String win = player.getName() + " lose . Please export your personal transaction through clicking the Export button.";
@@ -246,7 +246,7 @@ public class GameEventHandler extends Thread{
     
     public void quitGameHandler(Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Quit Game event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
-    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), false);
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " "  +event.getEventinfo(), false);
     	game.chartsTableModel.updChartsTable(roomId);
     	
     	if ((event.getUsername() == game.myName) || (roomId == 0) || (roomId == 1)) {
@@ -257,7 +257,7 @@ public class GameEventHandler extends Thread{
     
     public void communityEventHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Community event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
-    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getEventinfo(), false);
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " "  +event.getEventinfo(), false);
     	game.chartsTableModel.updChartsTable(roomId);
     	game.record.writeRecord(player, event);
     	
