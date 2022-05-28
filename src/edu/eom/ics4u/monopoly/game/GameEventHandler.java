@@ -278,7 +278,9 @@ public class GameEventHandler extends Thread{
 		// public properties
 		if (pType == "public") {
 			if (pName == "bank") {
-				bankTansferReq(player);
+				if (player.getIsMe() == true) {
+					bankTansferReq(player);
+				}
 			} else if (pName == "mall") {
 				// TODO
 			}
