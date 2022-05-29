@@ -251,6 +251,10 @@ public class Player {
 	}
 	
 	public void draw(Graphics g) {
+		if (isActive == false) {
+			return;
+		}
+		
 		g.drawImage(
 				images[edge], 
 				xFoot-20, yFoot-61,        // dst (x1, y1)
