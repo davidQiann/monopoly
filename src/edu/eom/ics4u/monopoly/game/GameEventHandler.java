@@ -60,6 +60,9 @@ public class GameEventHandler extends Thread{
     				case Event.EVENT_PAYRENT:
     					payRentHandler(player, event);
     					break;    					
+    				//case Event.EVENT_RECRENT:
+    				//	payRentHandler(player, event);
+    				//	break;
     				case Event.EVENT_BANKADJUST:
     					bankAdjustHandler(player, event);
     					break;    					
@@ -82,19 +85,19 @@ public class GameEventHandler extends Thread{
     					communityEventHandler(player, event);
     					break;    					
     				case Event.EVENT_LOANLAND:
-    					// not used?
+    					// not used
     					break;    					
     				case Event.EVENT_GAMEINFO:
-    					// not used?
+    					// not used
     					break;    					
     				case Event.EVENT_PASSBANK:
     					// not used
     					break;    					
     				case Event.EVENT_USERLOSE:
-    					// not used?
+    					// not used
     					break;    					
     				case Event.EVENT_GOTOHOSPITAL:
-    					// not used?
+    					// not used
     					break;    				
     			}
     		}
@@ -199,6 +202,13 @@ public class GameEventHandler extends Thread{
     public void payRentHandler(Player player, Event event) {
     	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Pay Rent event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
     	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " " + event.getEventinfo(), player.getIsMe());
+    	game.chartsTableModel.updChartsTable(roomId);
+    	game.record.writeRecord(player, event);
+    }
+    
+    public void recRentHandler(Player player, Event event) {
+    	System.out.printf("\n<<< Game Id = %d, Game GUI receives a Receive Rent event, room id = %d, user name = %s, info = %s, ts = %s\n", gameId, event.getRoomid(), event.getUsername(), event.getEventinfo(), event.getTimestamp());
+    	game.shiftShowTrans(event.getTimestamp()+ ": " +event.getUsername() + " "  +event.getEventinfo(), player.getIsMe());
     	game.chartsTableModel.updChartsTable(roomId);
     	game.record.writeRecord(player, event);
     }
