@@ -385,7 +385,7 @@ public class GameLogic implements LogicInterface {
 
 		cash = player.getCash();
 		saving = player.getSaving();
-		Event event = new Event(Event.EVENT_BANKADJUST, roomid,player.getName(), 0, player.getName() + " Adjust bank account with cash " + cash + " saving " + saving , adjvalue,0,cash,saving,0);
+		Event event = new Event(Event.EVENT_BANKADJUST, roomid,player.getName(), 0, player.getName() + " Adjust bank account with cash " + cash + " saving " + saving , adjvalue,-adjvalue,cash,saving,0);
 		roommodel.eventqueue.add(event);
 		return result;
 	}
