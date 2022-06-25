@@ -15,7 +15,7 @@ import edu.eom.ics4u.monopoly.model.community.CommunityChest;
 
 /**
  * @author david
- *This class is used for processing logic beind all actions that player makes inside this project
+ *This class is used for processing logic beind all actions that player makes inside this project(ie:joinroom, buyland)
  */
 public class GameLogic implements LogicInterface {
 
@@ -38,7 +38,7 @@ public class GameLogic implements LogicInterface {
 	
 
 	@Override
-	public LogicResult UserJoin(int roomid, String username, int characterId) {
+	public LogicResult UserJoin(int roomid, String username, int characterId) { 
 		Model model = Model.getInstance();
 		RoomModel roommodel= model.rooms.get(roomid);//add man machine
 		if(roomid==0 && !(username.equals("machine"))){

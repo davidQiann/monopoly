@@ -1,4 +1,5 @@
 package edu.eom.ics4u.monopoly.model;
+//LogicResult.java: Model used for generating logic result by game logic
 
 public class LogicResult {
     public static final int RESULT_SUCCESS=200;

@@ -2,7 +2,7 @@
 package edu.eom.ics4u.monopoly.logic;
 
 import edu.eom.ics4u.monopoly.model.LogicResult;
-
+// an interface so that both game’s remote logic and the local logic can share the same method outline
 
 public interface LogicInterface {
 	
