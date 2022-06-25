@@ -7,6 +7,11 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+// TransactionRecord class is responsible for storing the 
+// transaction records into the Excel file. Java does not
+// provide an API to read or write Excel documents. So we use 
+// the third-party library, Apache POI, to create and write 
+// transaction records to the Excel document.
 public class TransactionRecord {
 	public HSSFWorkbook workbook;
 	public HSSFSheet sheets [] = new HSSFSheet [4];

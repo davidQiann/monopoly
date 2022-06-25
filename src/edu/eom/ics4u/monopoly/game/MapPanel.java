@@ -17,6 +17,9 @@ import javax.swing.JPanel;
 import edu.eom.ics4u.monopoly.model.Model;
 import edu.eom.ics4u.monopoly.model.RoomModel;
 
+// The MapPanel class implements a custom graphics for the Map that 
+// displays the major view of the game, contains 2 dice, 1 road, 
+// 39 properties and up to 4 characters (players) components.
 public class MapPanel extends JPanel{
 	private static Color bkgColor = new Color(7,44,77);
 	

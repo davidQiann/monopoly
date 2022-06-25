@@ -15,6 +15,10 @@ import javax.swing.JTextField;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+// TransferDialog class extends the JDiglog class to implement a secondary pop-up
+// window for bank transfer. It provide two JComboBox to allow the player to choose
+// the "from account" and the "to account" and also allow the player to input how 
+// many money to be transfered.
 public class TransferDialog extends JDialog implements ActionListener {
 	private JLabel fromLabel, toLabel, amountLabel, errInfoLable;
 	private JButton confirmButton, cannelButton;

@@ -29,6 +29,9 @@ import edu.eom.ics4u.monopoly.model.LogicResult;
 import edu.eom.ics4u.monopoly.model.Model;
 import edu.eom.ics4u.monopoly.model.RoomModel;
 
+// The GameGui class is the main class of the Game block. 
+// It creates the frame of the game and layout four sections: 
+// Map, Operations, Assets Table and My Transaction. 
 public class GameGui extends JFrame implements WindowListener,MouseListener, ActionListener{
 	
 	public static final int MAP_X = 5;

@@ -6,6 +6,10 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
+// Property class  manages the property attributes, such as, 
+// name, image (land/house/hotel), level, location on the Map, etc. 
+// The different private properties have different rent and cost, 
+// which are stored by the static final arrays (RENT and COST).
 public class Property {
     private String type;// public and private
     private String name;

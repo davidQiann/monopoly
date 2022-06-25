@@ -60,9 +60,9 @@ public class GameEventHandler extends Thread{
     				case Event.EVENT_PAYRENT:
     					payRentHandler(player, event);
     					break;    					
-    				//case Event.EVENT_RECRENT:
-    				//	payRentHandler(player, event);
-    				//	break;
+    				case Event.EVENT_RECRENT:
+    					recRentHandler(player, event);
+    					break;
     				case Event.EVENT_BANKADJUST:
     					bankAdjustHandler(player, event);
     					break;    					

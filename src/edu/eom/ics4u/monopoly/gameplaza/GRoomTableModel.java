@@ -8,6 +8,9 @@ import edu.eom.ics4u.monopoly.model.Model;
 import edu.eom.ics4u.monopoly.model.RoomModel;
 import edu.eom.ics4u.monopoly.game.Player;
 
+// The GRoomTableModel manages that data of the game room table 
+// that is implemented with the JTable, and actually this table 
+// data is copied from the backend. 
 public class GRoomTableModel extends AbstractTableModel {	
 	/**
 	 * 
