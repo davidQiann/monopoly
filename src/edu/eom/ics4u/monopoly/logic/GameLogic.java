@@ -15,7 +15,7 @@ import edu.eom.ics4u.monopoly.model.community.CommunityChest;
 
 /**
  * @author david
- *
+ *This class is used for processing logic beind all actions that player makes inside this project
  */
 public class GameLogic implements LogicInterface {
 
@@ -60,7 +60,7 @@ public class GameLogic implements LogicInterface {
 			Player player = new Player(roomid,username,characterId, ownerid,  true);
 			roommodel.players.put(username,player);
 			}
-			roommodel.setStatus(RoomModel.STATUS_PENDING); // added by CYY
+			roommodel.setStatus(RoomModel.STATUS_PENDING); 
 			int roomstatus = roommodel.getStatus();
 
 			Event event = new Event(Event.EVENT_USERJOIN, roomid, username, 0, "User " + username + " Joined Room " + roomid, ownerid,roomstatus,0,0,0);
@@ -328,11 +328,11 @@ public class GameLogic implements LogicInterface {
 			return result;					
 		}
 		int rent = p.getRent(p.getLevel());
+
+		owner.setCash(owner.getCash()+rent);
 		int saving = player.getSaving();
 		int cash = player.getCash();
 		int loan = player.getLoan();
-
-		owner.setCash(owner.getCash()+rent);
 
 		if (PlayerPay(roommodel,player, rent) <0 ) {
 			//bankrupt
@@ -341,8 +341,16 @@ public class GameLogic implements LogicInterface {
 			return result;
 		}
 
-		Event event = new Event(Event.EVENT_PAYRENT, roomid,player.getName(), landid, player.getName() + " pay rent $" +rent + " for land " + p.getLocation() +" to " + owner.getName() , -rent, 0, cash+rent,saving,0);
+		Event event = new Event(Event.EVENT_PAYRENT, roomid,player.getName(), landid, player.getName() + " pay rent $" +rent + " for land " + p.getLocation() +" to " + owner.getName() , rent, 0, cash,saving,0);
 		roommodel.eventqueue.add(event);
+		
+		saving = owner.getSaving();
+		cash = owner.getCash();
+		loan = owner.getLoan();
+
+		event = new Event(Event.EVENT_RECRENT, roomid,owner.getName(), landid, owner.getName() + " receive rent $" +rent + " for land " + p.getLocation() , -rent, 0, cash,saving,0);
+		roommodel.eventqueue.add(event);
+		
 		return result;
 	}
 

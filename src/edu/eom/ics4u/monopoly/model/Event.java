@@ -23,6 +23,7 @@ public class Event {
 	public static final int EVENT_USERLOSE = 19;
 	public static final int EVENT_GOTOHOSPITAL = 20;
 	public static final int EVENT_PAYLOAN=21;
+	public static final int EVENT_RECRENT = 22;
 	
 	
 
