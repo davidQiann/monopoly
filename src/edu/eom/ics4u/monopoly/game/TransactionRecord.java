@@ -60,11 +60,14 @@ public class TransactionRecord {
 		int savingAmount = event.getAmount2();
 		int cash = event.getValue1();
 		int saving = event.getValue2();		
-		int rowId = rowIds[playerId];
+		int rowId;
 		HSSFRow row;
+		
+		// System.out.printf("amount1 = %d, amount2 = %d\n", cashAmount, savingAmount);
 		
 		// cash account
 		if (cashAmount != 0) {
+			rowId = rowIds[playerId];
 			row = sheets[playerId].createRow(rowId);
 			row.createCell(0).setCellValue(ts);
 			row.createCell(1).setCellValue(name);
@@ -83,6 +86,7 @@ public class TransactionRecord {
 		
 		// saving account
 		if (savingAmount != 0) {
+			rowId = rowIds[playerId];
 			row = sheets[playerId].createRow(rowId);
 			row.createCell(0).setCellValue(ts);
 			row.createCell(1).setCellValue(name);
