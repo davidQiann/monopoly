@@ -19,21 +19,27 @@ public class CommunityChest15 extends CommunityChest {
         Player player = room.players.get(playername);
         GameLogic logic = GameLogic.getInstance();
         int total = 0;
+        int cash = player.getCash();
+    	int saving = player.getSaving();
         for (Player pl : room.players.values()) {
             if (pl.isActive()== true && (pl.getName().equals(playername) == false)) {
+            	int cash0 = player.getCash();
+            	int saving0 = player.getSaving();
                 logic.PlayerPay(room, player, this.getAmount());
                 pl.setCash(pl.getCash() + this.getAmount());
                 
-        		int saving = player.getSaving();
-        		int cash = player.getCash();
+        		int saving1 = player.getSaving();
+        		int cash1 = player.getCash();
         		int loan = player.getLoan();
 
-                Event event = new Event(Event.EVENT_COMMUNITY, roomid,pl.getName(), pl.getStep(),  playername + this.getName()  , this.getAmount(), 0,cash,saving,0);
+                Event event = new Event(Event.EVENT_COMMUNITY, roomid,pl.getName(), pl.getStep(),  playername + this.getName()  , cash0-cash1, saving0-saving1,cash1,saving1,0);
                 room.eventqueue.add(event);        
                 total += this.getAmount();
             }
         }
-        Event event = new Event(Event.EVENT_COMMUNITY, roomid,player.getName(), player.getStep(), this.getName()  , total, 0,-1,0,0);
+        int saving1 = player.getSaving();
+		int cash1 = player.getCash();
+        Event event = new Event(Event.EVENT_COMMUNITY, roomid,player.getName(), player.getStep(), this.getName()  , cash-cash1, saving-saving1,cash1,saving1,0);
         room.eventqueue.add(event);  
         return this.getName();      
     }

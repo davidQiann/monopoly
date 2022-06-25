@@ -10,7 +10,7 @@ import edu.eom.ics4u.monopoly.game.Player;
 import edu.eom.ics4u.monopoly.game.Property;
 import edu.eom.ics4u.monopoly.logic.LogicInterface;
 import edu.eom.ics4u.monopoly.model.community.CommunityChest;
-
+//RoomModel.java: Model used for individual game room
 public class RoomModel {
 	public static final int STATUS_EMPTY  = 0;
 	public static final int STATUS_PENDING  = 1;

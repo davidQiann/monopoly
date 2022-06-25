@@ -194,8 +194,12 @@ public class GameLogic implements LogicInterface {
 			// collect interest
 			int interest = (int)(0.1 * saving) - (int)(0.2*loan);
 			System.out.println("distribute interest for " + player.getName() + " value " + interest);
+			int cash0 = player.getCash();
+			int saving0 = player.getSaving();
 			PlayerPay(roommodel, player, 0-interest);
-			Event event1 = new Event(Event.EVENT_COLLECTMONEY, roomid,player.getName(), player.getStep(), player.getName() + "Monthend distribute interest $" + saving +"for " +player.getName(),0-interest,0,cash+interest,saving,0);
+			int cash1 = player.getCash();
+			int saving1 = player.getSaving();
+			Event event1 = new Event(Event.EVENT_COLLECTMONEY, roomid,player.getName(), player.getStep(), player.getName() + "Monthend distribute interest $" + saving +"for " +player.getName(),cash0-cash1,saving0-saving1,cash1,saving1,0);
 			roommodel.eventqueue.add(event1);
 		}
 
@@ -341,7 +345,10 @@ public class GameLogic implements LogicInterface {
 			return result;
 		}
 
-		Event event = new Event(Event.EVENT_PAYRENT, roomid,player.getName(), landid, player.getName() + " pay rent $" +rent + " for land " + p.getLocation() +" to " + owner.getName() , rent, 0, cash,saving,0);
+		int cash1 = player.getCash();
+		int saving1 = player.getSaving();
+
+		Event event = new Event(Event.EVENT_PAYRENT, roomid,player.getName(), landid, player.getName() + " pay rent $" +rent + " for land " + p.getLocation() +" to " + owner.getName() , cash-cash1, saving-saving1, cash1,saving1,0);
 		roommodel.eventqueue.add(event);
 		
 		saving = owner.getSaving();
