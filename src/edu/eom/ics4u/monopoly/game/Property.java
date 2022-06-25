@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
+// Author: Sirui
 // Property class  manages the property attributes, such as, 
 // name, image (land/house/hotel), level, location on the Map, etc. 
 // The different private properties have different rent and cost, 

@@ -7,6 +7,7 @@ import java.awt.Color;
 import edu.eom.ics4u.monopoly.game.GameGui;
 import edu.eom.ics4u.monopoly.model.Event;
 
+// Author: Sirui
 // The PlazaEventHandler class is responsible for listening to the events 
 // from the backend events and updating the GUI display with the new rooms’ status. 
 public class PlazaEventHandler extends Thread{
