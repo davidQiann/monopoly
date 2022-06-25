@@ -23,6 +23,7 @@ import edu.eom.ics4u.monopoly.model.LogicResult;
 //import javax.swing.text.html.AccessibleHTML.TableElementInfo.TableAccessibleContext;
 import edu.eom.ics4u.monopoly.model.Model;
 
+// Author: Sirui
 // The GamePlaza class is the main class of the Plaza block 
 // that creates a GUI and monitors the player operations,
 // allows player joins a game room with his/her name and character,

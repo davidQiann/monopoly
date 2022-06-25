@@ -11,6 +11,9 @@ import edu.eom.ics4u.monopoly.model.Event;
 import edu.eom.ics4u.monopoly.model.LogicResult;
 import edu.eom.ics4u.monopoly.model.RoomModel;
 
+// Author: Sirui
+// GameEventHandler class is responsible for interacting with the backend, 
+// sending the requests to the backend and receiving responses (events) from the backend.
 public class GameEventHandler extends Thread{
     private GameGui game;
     private int roomId;

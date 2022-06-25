@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import edu.eom.ics4u.monopoly.model.Model;
 import edu.eom.ics4u.monopoly.model.RoomModel;
 
+// Author: Sirui
 // The Player class manages the player attributes, such as, 
 // name, character image, cash account, saving account, 
 // location on the Map, etc.

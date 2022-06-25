@@ -5,6 +5,8 @@ import javax.swing.table.AbstractTableModel;
 import edu.eom.ics4u.monopoly.model.Model;
 import edu.eom.ics4u.monopoly.model.RoomModel;
 
+// Author: Sirui
+// ChartsTableModel class manages the assets data for each player and shows them as a table.
 public class ChartsTableModel extends AbstractTableModel {
     public static final int COL_NAME   = 0;
     public static final int COL_ESTATE = 1;

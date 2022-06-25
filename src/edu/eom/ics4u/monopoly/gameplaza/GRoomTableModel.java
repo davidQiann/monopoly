@@ -8,15 +8,11 @@ import edu.eom.ics4u.monopoly.model.Model;
 import edu.eom.ics4u.monopoly.model.RoomModel;
 import edu.eom.ics4u.monopoly.game.Player;
 
+// Author: Sirui
 // The GRoomTableModel manages that data of the game room table 
 // that is implemented with the JTable, and actually this table 
 // data is copied from the backend. 
 public class GRoomTableModel extends AbstractTableModel {	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3009516032021471955L;
-
 	private final int NUM_ROOMS = 50;
 	
 	private String[] columnNames = {"Room ID",
