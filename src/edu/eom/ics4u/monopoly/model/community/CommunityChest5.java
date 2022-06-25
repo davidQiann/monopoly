@@ -21,13 +21,15 @@ public class CommunityChest5 extends CommunityChest {
         int total = 0;
         for (Player pl : room.players.values()) {
             if (pl.isActive() == true && (pl.getName().equals(playername) == false)) {
+            	int cash0 = player.getCash();
+            	int saving0 = player.getSaving();
                 logic.PlayerPay(room, pl, this.getAmount());
                 player.setCash(player.getCash() + this.getAmount());
-                int saving = player.getSaving();
-        		int cash = player.getCash();
+                int saving1 = player.getSaving();
+        		int cash1 = player.getCash();
         		int loan = player.getLoan();
 
-                Event event = new Event(Event.EVENT_COMMUNITY, roomid,pl.getName(), pl.getStep(),  "Player " + pl.getName() +"pay birthday gift for " + playername  , this.getAmount(), 0,cash,saving,0);
+                Event event = new Event(Event.EVENT_COMMUNITY, roomid,pl.getName(), pl.getStep(),  "Player " + pl.getName() +"pay birthday gift for " + playername  , cash0-cash1, saving0-saving1,cash1,saving1,0);
                 room.eventqueue.add(event);        
                 total += this.getAmount();
             }
