@@ -23,7 +23,12 @@ public class CommunityChest15 extends CommunityChest {
             if (pl.isActive()== true && (pl.getName().equals(playername) == false)) {
                 logic.PlayerPay(room, player, this.getAmount());
                 pl.setCash(pl.getCash() + this.getAmount());
-                Event event = new Event(Event.EVENT_COMMUNITY, roomid,pl.getName(), pl.getStep(),  playername + this.getName()  , this.getAmount(), 0,0,0,0);
+                
+        		int saving = player.getSaving();
+        		int cash = player.getCash();
+        		int loan = player.getLoan();
+
+                Event event = new Event(Event.EVENT_COMMUNITY, roomid,pl.getName(), pl.getStep(),  playername + this.getName()  , this.getAmount(), 0,cash,saving,0);
                 room.eventqueue.add(event);        
                 total += this.getAmount();
             }

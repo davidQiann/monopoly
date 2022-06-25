@@ -25,7 +25,11 @@ public class CommunityChest9 extends CommunityChest {
         }
         GameLogic gameLogic = GameLogic.getInstance();
         gameLogic.PlayerPay(room, player, 10*houses);
-        Event event = new Event(Event.EVENT_COMMUNITY, roomid,player.getName(), player.getStep(),  playername  ,10*houses, 0,-1,0,0);
+        int saving = player.getSaving();
+		int cash = player.getCash();
+		int loan = player.getLoan();
+
+        Event event = new Event(Event.EVENT_COMMUNITY, roomid,player.getName(), player.getStep(),  playername  ,10*houses, 0,cash,saving,0);
 		room.eventqueue.add(event); 
         return this.getName();   
     }

@@ -80,7 +80,11 @@ public class CommunityChest {
         if (step >=0) {
             player.setStep(step);
         } 
-        Event event = new Event(Event.EVENT_COMMUNITY, roomid,player.getName(), player.getStep(),  name  ,amount, 0,step,0,0);
+		int saving = player.getSaving();
+		int cash = player.getCash();
+		int loan = player.getLoan();
+
+        Event event = new Event(Event.EVENT_COMMUNITY, roomid,player.getName(), player.getStep(),  name  ,-amount, 0,cash,saving,0);
 		room.eventqueue.add(event);
         return name;        
 	

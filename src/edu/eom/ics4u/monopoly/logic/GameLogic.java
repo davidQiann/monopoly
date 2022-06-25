@@ -162,20 +162,23 @@ public class GameLogic implements LogicInterface {
 
 		int steps = player.getStep();
 		int nextstep = steps + dice1 +dice2;
+		int saving = player.getSaving();
+		int cash = player.getCash();
+		int loan = player.getLoan();
 		if (nextstep > 39) {  // bypass start point
-			Event event1 = new Event(Event.EVENT_COLLECTMONEY, roomid,player.getName(), player.getStep(), player.getName() + "collect $200",200, 0,0,0,0);
+			Event event1 = new Event(Event.EVENT_COLLECTMONEY, roomid,player.getName(), player.getStep(), player.getName() + "collect $200",-200, 0,cash + 200,saving,0);
 			roommodel.eventqueue.add(event1);
 			player.setCash(player.getCash()+200);
 		}
 
 		if (steps < 9 && nextstep >=9 ) {  // bypass bank
 			System.out.println("Bypass bank");
-			Event event1 = new Event(Event.EVENT_PASSBANK, roomid,player.getName(), player.getStep(), player.getName() + "pass bank",0,0 ,0,0,0);
+			Event event1 = new Event(Event.EVENT_PASSBANK, roomid,player.getName(), player.getStep(), player.getName() + "pass bank",0,0 ,cash,saving,0);
 			roommodel.eventqueue.add(event1);
 		}
 		if (nextstep == 29) {  // go to hospital
 			System.out.println("Go to Hospital");
-			Event event1 = new Event(Event.EVENT_GOTOHOSPITAL, roomid,player.getName(), player.getStep(), player.getName() + "go to hospital",0,0 ,0,0,0);
+			Event event1 = new Event(Event.EVENT_GOTOHOSPITAL, roomid,player.getName(), player.getStep(), player.getName() + "go to hospital",0,0 ,cash,saving,0);
 			roommodel.eventqueue.add(event1);
 			player.setHospitalstatus(3);   // stay in hospital for 3 days
 			return result;
@@ -183,18 +186,16 @@ public class GameLogic implements LogicInterface {
 		//add one for community
 		if(steps< 19 && nextstep>=19) {
 			System.out.println("Bypass community");
-			Event event1 = new Event(Event.EVENT_COMMUNITY , roomid,player.getName(), player.getStep(), player.getName() + "pass park",0,0 ,0,0,0);
+			Event event1 = new Event(Event.EVENT_COMMUNITY , roomid,player.getName(), player.getStep(), player.getName() + "pass park",0,0 ,cash,saving,0);
 			roommodel.eventqueue.add(event1);
 		}
 		if ( (roommodel.getDate()==0 && roommodel.getMonth()!=0 ) ) {
 			// bypass bank on first day of each month
 			// collect interest
-			int saving = player.getSaving();
-			int loan = player.getLoan();
 			int interest = (int)(0.1 * saving) - (int)(0.2*loan);
 			System.out.println("distribute interest for " + player.getName() + " value " + interest);
 			PlayerPay(roommodel, player, 0-interest);
-			Event event1 = new Event(Event.EVENT_COLLECTMONEY, roomid,player.getName(), player.getStep(), player.getName() + "Monthend distribute interest $" + saving +"for " +player.getName(),0-interest,0,0,0,0);
+			Event event1 = new Event(Event.EVENT_COLLECTMONEY, roomid,player.getName(), player.getStep(), player.getName() + "Monthend distribute interest $" + saving +"for " +player.getName(),0-interest,0,cash+interest,saving,0);
 			roommodel.eventqueue.add(event1);
 		}
 
@@ -223,16 +224,18 @@ public class GameLogic implements LogicInterface {
 			return result;			
 		}
 
+		int saving = player.getSaving();
+		int cash = player.getCash();
+		int loan = player.getLoan();
 
 		int price = p.getPrice("land");
-		int cash = player.getCash();
 		if (cash < price) {
 			result.setResultcode(LogicResult.RESULT_FAIL);
 			result.setMessage("no enough cash, can not buy land");
 			return result;			
 		}
 		player.setCash(cash-price);
-		Event event = new Event(Event.EVENT_BUYLAND, roomid,player.getName(), landid, player.getName() + " buy land at " + p.getLocation() + " with $" +price , price, 0, cash,0,0);
+		Event event = new Event(Event.EVENT_BUYLAND, roomid,player.getName(), landid, player.getName() + " buy land at " + p.getLocation() + " with $" +price , price, 0, cash-price,saving,0);
 		roommodel.eventqueue.add(event);
 		p.updPrivateProperty(level,player.getName(),player.getImageStar());
 		return result;
@@ -272,15 +275,19 @@ public class GameLogic implements LogicInterface {
 			result.setMessage("already highest level, can not upgrade");
 			return result;			
 		}
+		int saving = player.getSaving();
 		int cash = player.getCash();
+		int loan = player.getLoan();
+
 		if (cash < price) {
 			result.setResultcode(LogicResult.RESULT_FAIL);
 			result.setMessage("Build house failed, no enough cash");
 			return result;			
 		}
+		
 		player.setCash(cash-price);
 		p.updPrivateProperty(level + 1 ,player.getName(),player.getImageStar());
-		Event event = new Event(Event.EVENT_BUILDHOUSE, roomid,player.getName(), landid, player.getName() + " build house at " + p.getLocation() + " with $" +price , price, 0, cash,0,0);
+		Event event = new Event(Event.EVENT_BUILDHOUSE, roomid,player.getName(), landid, player.getName() + " build house at " + p.getLocation() + " with $" +price , price, 0, cash-price,saving,0);
 		roommodel.eventqueue.add(event);
 		return result;
 		
@@ -321,6 +328,10 @@ public class GameLogic implements LogicInterface {
 			return result;					
 		}
 		int rent = p.getRent(p.getLevel());
+		int saving = player.getSaving();
+		int cash = player.getCash();
+		int loan = player.getLoan();
+
 		owner.setCash(owner.getCash()+rent);
 
 		if (PlayerPay(roommodel,player, rent) <0 ) {
@@ -330,7 +341,7 @@ public class GameLogic implements LogicInterface {
 			return result;
 		}
 
-		Event event = new Event(Event.EVENT_PAYRENT, roomid,player.getName(), landid, player.getName() + " pay rent $" +rent + " for land " + p.getLocation() +" to " + owner.getName() , rent, 0, 0,0,0);
+		Event event = new Event(Event.EVENT_PAYRENT, roomid,player.getName(), landid, player.getName() + " pay rent $" +rent + " for land " + p.getLocation() +" to " + owner.getName() , -rent, 0, cash+rent,saving,0);
 		roommodel.eventqueue.add(event);
 		return result;
 	}
@@ -383,7 +394,11 @@ public class GameLogic implements LogicInterface {
 		
 		roommodel.players.remove(username); // remove user from list, but keep its properties.
 
-		Event event = new Event(Event.EVENT_QUITGAME, roomid,player.getName(), 0, player.getName() + " Quit Game " + roomid, 0,0,0,0,0);
+		int saving = player.getSaving();
+		int cash = player.getCash();
+		int loan = player.getLoan();
+
+		Event event = new Event(Event.EVENT_QUITGAME, roomid,player.getName(), 0, player.getName() + " Quit Game " + roomid, 0,0,cash,saving,0);
 		roommodel.eventqueue.add(event);
 		model.getEventqueue().add(event);
 		
@@ -430,8 +445,11 @@ public class GameLogic implements LogicInterface {
 		}
 		int value = p.getValue()/2;
 		player.setCash(player.getCash() + value);
+		int saving = player.getSaving();
+		int cash = player.getCash();
+		int loan = player.getLoan();
 		
-		Event event = new Event(Event.EVENT_SELLLAND, roomid,player.getName(), landid, "Land  " + p.getLocation() + " Selled by " + player.getName() + " for $" + value, value,0,0,0,0);
+		Event event = new Event(Event.EVENT_SELLLAND, roomid,player.getName(), landid, "Land  " + p.getLocation() + " Selled by " + player.getName() + " for $" + value, -value,0,cash,saving,0);
 		roommodel.eventqueue.add(event);
 		p.Reset();
 		return result;
@@ -455,7 +473,11 @@ public class GameLogic implements LogicInterface {
 		int value = p.getValue()/2;
 		player.setCash(player.getCash() + value);
 		player.setLoan(player.getLoan() + value);
-		Event event = new Event(Event.EVENT_LOANLAND, roomid,player.getName(), landid, "Land  " + p.getLocation() + " Loaned by " + player.getName() + " for $" + value, value,0,0,0,0);
+		int saving = player.getSaving();
+		int cash = player.getCash();
+		int loan = player.getLoan();
+
+		Event event = new Event(Event.EVENT_LOANLAND, roomid,player.getName(), landid, "Land  " + p.getLocation() + " Loaned by " + player.getName() + " for $" + value, value,0,cash,saving,0);
 		roommodel.eventqueue.add(event);
 		p.setLoaned(true);
 		return result;
@@ -476,7 +498,11 @@ public class GameLogic implements LogicInterface {
 				player.setCash(cash-value);
 				p.setLoaned(false);
 				player.setLoan(player.getLoan()- value);
-				Event event = new Event(Event.EVENT_PAYLOAN, roomid,player.getName(), landid, "Land  " + p.getLocation() + " is pay Loaned by " + player.getName() + " for $" + value, value,0,0,0,0);
+				int saving = player.getSaving();
+				cash = player.getCash();
+				int loan = player.getLoan();
+
+				Event event = new Event(Event.EVENT_PAYLOAN, roomid,player.getName(), landid, "Land  " + p.getLocation() + " is pay Loaned by " + player.getName() + " for $" + value, value,0,cash,saving,0);
 				roommodel.eventqueue.add(event);
 				return result;
 			}
@@ -505,6 +531,7 @@ public class GameLogic implements LogicInterface {
 		roommodel.setDate(0);
 		roommodel.setMonth(0);
 		roommodel.setStatus(0);
+
 		Event event = new Event(Event.EVENT_GAMEOVER, roomid, "", 0, "game for Room " + roomid + " Closed", 0,0,0,0,0);
 		model.getEventqueue().add(event);
 
@@ -518,6 +545,7 @@ public class GameLogic implements LogicInterface {
 		RoomModel roommodel= model.rooms.get(roomid);
 		LogicResult result = new LogicResult(LogicResult.RESULT_SUCCESS, "");
 		String turnuser = roommodel.getUserTurn(username);
+
 		if (turnuser != null) {
 			Event event1 = new Event(Event.EVENT_USERGO, roomid, turnuser, 0, "User " + turnuser + " Go" , 0,0,0,0,0);
 			roommodel.eventqueue.add(event1);
@@ -558,7 +586,11 @@ public class GameLogic implements LogicInterface {
 						int price = p1.getValue()/2;
 						total -= price;
 						p1.Reset();
-						Event event = new Event(Event.EVENT_SELLLAND, roommodel.getRoomid(),player.getName(), i, player.getName() + " force to sell land " +p1.getLocation() + " for $" + price , price, 0, 0,0,0);
+						saving = player.getSaving();
+						cash = player.getCash();
+						int loan = player.getLoan();
+
+						Event event = new Event(Event.EVENT_SELLLAND, roommodel.getRoomid(),player.getName(), i, player.getName() + " force to sell land " +p1.getLocation() + " for $" + price , -price, 0, cash,saving,0);
 						roommodel.eventqueue.add(event);
 						if (total <= 0) {
 							break;
@@ -567,7 +599,11 @@ public class GameLogic implements LogicInterface {
 				}
 			
 				if(total >=0) {
-					Event event = new Event(Event.EVENT_USERBANKRUPTCY, roommodel.getRoomid(),player.getName(), 0, player.getName() + " Bankruptcy!!! ", 0, 0, 0,0,0);
+					saving = player.getSaving();
+					cash = player.getCash();
+					int loan = player.getLoan();
+
+					Event event = new Event(Event.EVENT_USERBANKRUPTCY, roommodel.getRoomid(),player.getName(), 0, player.getName() + " Bankruptcy!!! ", 0, 0, cash,saving,0);
 					roommodel.eventqueue.add(event);		
 					player.setActive(false);
 					player.setCash(0);
@@ -583,7 +619,8 @@ public class GameLogic implements LogicInterface {
 						}
 					}
 					if (activecount == 1 ) { // only one winner remain
-						event = new Event(Event.EVENT_USERWIN, roommodel.getRoomid(),winner.getName(), 0, winner.getName() + " Win!!! ", 0, 0, 0,0,0);
+						
+						event = new Event(Event.EVENT_USERWIN, roommodel.getRoomid(),winner.getName(), 0, winner.getName() + " Win!!! ", 0, 0, cash,saving,0);
 						roommodel.eventqueue.add(event);
 					}	
 					return -1;
