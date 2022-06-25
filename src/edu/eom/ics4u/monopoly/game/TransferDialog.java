@@ -43,7 +43,7 @@ public class TransferDialog extends JDialog implements ActionListener {
 		
 		setTitle("Bank Transfer:");
 		setModal(true);
-		setSize(380, 170);
+		setSize(380, 170+10);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		

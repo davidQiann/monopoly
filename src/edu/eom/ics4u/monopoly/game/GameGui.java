@@ -53,7 +53,7 @@ public class GameGui extends JFrame implements WindowListener,MouseListener, Act
     public static final int MY_TRANS_HEIGHT  = 180+24*2;
     
     public static final int GUI_WIDTH  = MAP_WIDTH + RIGHT_ZONE_WIDTH + 30;
-    public static final int GUI_HEIGHT = MAP_HEIGHT + 48;
+    public static final int GUI_HEIGHT = MAP_HEIGHT + 48 + 10;
     
     private JPanel operationPanel, transitionPanel;
     private JTable chartsTable;

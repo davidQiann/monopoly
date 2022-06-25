@@ -35,7 +35,7 @@ public class GamePlaza extends JFrame implements ActionListener{
 	public static final int GROOM_TABLE_HEIGHT = 600;
 	
 	private static final int PLAZA_WIDTH  = GROOM_TABLE_X + GROOM_TABLE_WIDTH  + 20;
-	private static final int PLAZA_HEIGHT = GROOM_TABLE_Y + GROOM_TABLE_HEIGHT + 93;
+	private static final int PLAZA_HEIGHT = GROOM_TABLE_Y + GROOM_TABLE_HEIGHT + 93 + 10;
 		
 	public static final ImageIcon CHARACTER1 = new ImageIcon(GamePlaza.class.getResource("/Images/character1.png"));
 	public static final ImageIcon CHARACTER2 = new ImageIcon(GamePlaza.class.getResource("/Images/character2.png"));
